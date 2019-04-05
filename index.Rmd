@@ -4,90 +4,197 @@ author: "Marko Lipka"
 date: '2019-04-05'
 output:
   html_document:
-    highlight: zenburn
-    theme: journal
+    highlight: default
+    theme: readable
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, results = "hold", comment = NA)
 ```
 
 # **R**-Grundlagen:
 
 ## Skripte:
 
-Skripte sind Programme die in *Skriptsprachen* geschrieben sind. Es sind Textdateien die mit einem normalen Texteditor bearbeitet werden können. Diese Skripte werden vom *Interpreter* der jeweiligen Sprache ausgeführt. Jede Programmiersprache ermöglicht das einfügen von Kommentaren, die vom Interpreter ignoriert werden. In **R** werden Kommentare von einem **#**-Zeichen eingeleitet.
+Skripte sind Programme die in *Skriptsprachen* geschrieben sind. Es sind Textdateien die mit einem normalen Texteditor bearbeitet werden können. Diese Skripte werden vom *Interpreter* der jeweiligen Sprache *ausgeführt*. Man könnte also im Windows-Editor **R**-Skripte schreiben, die man dann mit dem **R**-*Interpreter* (muss man zunächst [installieren](http://www.r-project.org)) *ausführt*. Viel schöner ist es aber, in einer sogenannten Entwicklungsumgebung zu arbeiten, die Editor, Interpreter, Hilfeseiten und viele, viele kleine und große Helferlein in sich vereint. Für **R** kann ich uneingeschränkt die Entwicklungsumgebung [**RStudio**](http://www.rstudio.com) empfehlen, sie ist sehr gut.
 
-Ein sehr einfaches Beispiel in **R**:
+
+Ein Programm oder Skript ist also eine Abfolge von Anweisungen, die der *Interpreter* so übersetzt, dass der Computer sie *ausführen* kann. 
+Jede Programmiersprache ermöglicht zudem das einfügen von Kommentaren, die vom *Interpreter* ignoriert werden. In **R** werden Kommentare von einem `#`-Zeichen eingeleitet.
+Kommentare sind wichtig, um den Code zu erläutern[^Kommentare]. Andere Menschen oder das zukünftige Selbst[^Selbst] können es sonst schwer haben, das Programm zu verstehen.
+
+[^Kommentare]: Kommentare sollen den Programmcode erläutern, nicht noch einmal beschreiben, was der Code tut. Gut geschriebener Code erklärt sich bestenfalls selbst. Die Kommentare erläutern zusätzlich die Absichten, Fallstricke, Pläne und Gedanken des Autors. 
+
+[^Selbst]: Es ist bemerkenswert, wie wenig Zeit es braucht, bis man seinen eigenen Code nicht mehr versteht.
+
+> `Die folgenden Beispiele zeigen Programmcode im grau hinterlegten Kasten.`  
+> Die zugehörige Ausgabe (falls es eine gibt) findet sich jeweils im Kasten darunter.
+
+Programmieren lernt man am besten durch Machen... also ran an die Tasten, die Beispiele nachvollziehen und spielen!
+
+Ein sehr einfaches **R**-Skript:
 
 ```{r}
+"Hello world!" # Ausgabe einer Zeichenkette
 1 + 1 # Addieren zweier Zahlen und Ausgabe des Ergebnisses
-print("Hello world!") # Ausgabe einer Zeichenkette
 ```
 
-Das obige Skript besteht nur aus zwei Zeilen, die 
+Das obige Skript besteht aus zwei Zeilen mit jeweils einem Befehl und erklärendem Kommentar dahinter:
 
- * eins und eins zusammenzählen und
- * den Text "Hello world!" ausgeben.
+ * Die erste Zeile bewirkt das Ausgeben des Texts "Hello world!".
+ * Die zweite Zeile zählt eins und eins zusammen und gibt das Ergebnis zurück.
 
-Kommentare sind wichtig, um den Code zu erklären. Andere Menschen oder das zukünftige Selbst haben es sonst schwer, das Programm zu verstehen.
+Beide Befehle haben jeweils einen *Rückgabewert*, der im Konsolenfenster ausgegeben wird. Einmal den Text **"Hello world!"**
+und
+einmal die Zahl **2**.
+
+Und was soll die **[1]** davor bedeuten?
+Ausgaben in **R** werden nummeriert und die Nummer des ersten Elements jeder Zeile steht in eckigen Klammern voran, wobei mit jedem neuen Befehl die Zählung wieder bei 1 beginnt. Folgendes Beipiel zur Verdeutlichung:
+
+```{r}
+1:42 # 1:42 ist eine Kurzform zur Erzeugung einer Reihe ganzer Zahlen von 1 bis 42
+```
+
 
 ## Variablen
 
-Variablen sind Speicherorte für Daten. Sie könne beliebige Arten und Mengen von Daten enthalten und sollten daher immer sinnvoll benannt sein. In **R** werden Daten mit dem Zuweisungsoperator " <- " in Variablen geschrieben.
+Variablen sind **Platzhalter** für Daten. Sie könne beliebige Arten und Mengen von Daten enthalten und sollten daher immer sinnvoll benannt sein. In **R** werden Daten mit dem Zuweisungsoperator `<-` in Variablen geschrieben:
 
 ```{r}
-summand <- 41
-summe <- summand + 1
-print(summe)
+eine.zahl <- 23
+```
+
+Das Auslesen einer Variable geschieht durch simples 'ausführen' des Variablennamens:
+
+```{r}
+eine.zahl
+```
+
+
+Als Variablenname ist alles erlaubt, was mit einem Buchstaben beginnt[^Ausnahmen]. Man sollte allerdings keine Namen verwenden, die bereits vergeben sind (Funktionennamen, '*TRUE*' und '*FALSE*', ...), das kann sonst unerwartetes Verhalten des Programms hervorrufen. Aussagekräftige Variablennamen helfen sehr beim Verständnis des Programms!
+
+[^Ausnahmen]: Es gibt gewisse Ausnahmen: so dürfen Variablen z.B. auch mit einem '.' oder '_' beginnen. Ziffern, Rechen- und Vergleichsoperatoren ('+', '<', '=', ...) sind aber tabu!
+
+```{r}
+summe <- eine.zahl + 19
+summe
 ```
 
 Im obigen Skript wird 
 
- 1) die Zahl *41* in die Variable *summand* geschrieben,
- 2) die Summe aus *summand* und 1 in die Variable *summe* geschrieben und
- 3) das Ergebnis der Berechnung ausgegeben.
+ 1) die Summe aus *eine.zahl* + 19 gebildet und in die Variable *summe* geschrieben,
+ 2) das Ergebnis der Berechnung ausgegeben.
  
- Beachte: Die Ergebnisse der ersten beiden Zeilen werden nicht an den Benutzer zurück gemeldet sondern in die Variablen geschrieben. Die letzte Zeile hingegen schreibt nicht in eine Variable sondern gibt ihr Ergebnis auf dem Bildschirm aus.
+ Beachte: Das Ergebniss der ersten Zeile wird nicht ausgegeben sondern in die Variable *summe* geschrieben. Die zweite Zeile hingegen schreibt nicht in eine Variable sondern gibt ihr Ergebnis auf dem Bildschirm aus.
+
 
 ## Funktionen
 
-In **R** wird fast alles mit *Funktionen* erledigt. Funktionen tun immer etwas, geben meistens etwas zurück und nehmen oft wenigstens eine Eingabe entgegen. Die Funktion **round()** zum Beispiel rundet einen numerischen Wert:
+In **R** wird fast alles mit *Funktionen* erledigt. Funktionen nehmen meistens wenigstens eine Eingabe entgegen, tun etwas damit und geben in der Regel ein Ergebnis zurück. Die Funktion `round()` zum Beispiel rundet einen numerischen Wert:
 
 ```{r}
 round(x = 1.234, digits = 1)
 ```
 
-Die Teile innerhalb der Klammer sind die *Argumente* der Funktion. Im obigen Beispiel werden der Funktion **round()** zwei Argument mitgegeben, die zu rundende Zahl (*x*) und die Anzahl Dezimalstellen (*digits*) auf die gerundet werden soll.
+Die Teile innerhalb der Klammer sind die *Argumente* der Funktion. Im obigen Beispiel werden der Funktion `round()` zwei Argument mitgegeben, die zu rundende Zahl (*x*) und die Anzahl Dezimalstellen (*digits*) auf die gerundet werden soll.
 
-## Datentypen:
+## Datentypen und -strukturen:
 
-Es ist wichtig, darauf zu achten, was für eine Art Daten man verarbeitet. Es gibt neben numerischen Werten (*numeric*) und Zeichenketten (*character*) noch viele, viele weitere.
+Es ist wichtig, darauf zu achten, was für eine Art Daten man verarbeitet. Es gibt neben numerischen Werten (*numeric*) und Zeichenketten (*character*) noch viele weitere, aber für den Anfang reichen uns die beiden wichtigsten.
 
 ```{r}
 # Zeichenketten werden von Anführungszeichen gerahmt
-text <- "zweiundvierzig"
-noch.ein.text <- "42"
+ein.beispieltext <- "zweiundvierzig"
+text.der.aussieht.wie.eine.zahl <- "42"
 
-zahl <- 42 # das ist eine Zahl, man kann damit rechnen
-zahl + 0
+eine.echte.zahl <- 42 # das ist eine Zahl, man kann damit rechnen
+eine.echte.zahl + 0
 ```
 
-Daten können in ganz verschiedenen (und beinahe beliebig komplexen) Kombinationen und Strukturen angeordnet sein. Eine sehr nützliche und weithin bekannte Struktur ist die Tabelle (*data.frame*):
+Daten können in ganz verschiedenen (und beinahe beliebig komplexen) Kombinationen und Strukturen angeordnet sein.
+
+In der einfachsten Form, steckt nur ein einzelner Wert in einer Variable, so wie in den Beispielen *ein.beispieltext* oder *eine.echte.zahl* oben.
+
+### Vector
+
+Oft werden aber auch Reihen von gleichartigen Werten in einer Variable ablegelt, sogenannte Vektoren (*vector*). Man kann sie auf verschiedene Arten generieren, meist durch das Verketten von Einzelelementen mithilfe der Funktion `c()` (*concatenate*).
+
 
 ```{r}
-data.frame.example <- data.frame(a = text, b = noch.ein.text, c = zahl)
+drei.vier.und.fuenf <- c(3, 4, 5) # 'c' steht für concatenate (verknüpfen)
+drei.vier.und.fuenf # gibt die eben abgelegte Zahlenreihe aus
 
-data.frame.example
+ganzzahlen.von.eins.bis.zehn <- 1:10 # die faule Variante, eine Zahlenreihe zu generieren
+ganzzahlen.von.eins.bis.zehn 
+
+grossbuchstaben <- c("A", "B", "C", "D") # ein vector vom Typ 'character'
+grossbuchstaben
+
+gemischter.vector <- c(1, 2, 3, 4, "fünf")
+gemischter.vector
+```
+
+Kannst du erkennen, welchen Datentyp *gemischter.vector* hat?[^Lösung1]
+
+[^Lösung1]: In die Variable *gemischter.vector* wurden vier Zahlen (*numeric*) und ein Textstring (*character*) aneinandergekettet. In so einem Fall wählt **R** den Datentyp für den vector aus, in dem jeder Wert gespeichert werden kann, nämlich *character*. Der String "fünf" lässt sich nicht als *numeric* speichern, die Zahlen aber sehr wohl als *character*.
+
+Mit Vektoren vom Typ *numeric* kann man rechnen:
+
+```{r}
+# Berechnen wir die Mittelwerte der beiden Zahlenreihen:
+mean(drei.vier.und.fuenf)
+mean(ganzzahlen.von.eins.bis.zehn) 
 ```
 
 
+Enthält der Vektor Daten vom Typ *character*, sind numerische Operationen nicht möglich:
+
+```{r}
+mean(grossbuchstaben)
+```
+
+Das Ergebnis des Versuchs, den Mittelwert aus einer Reihe von Buchstaben zu bilden, ist **NA**, was so viel wie '*not applicable*' (nicht anwendbar, nicht zutreffend) oder '*not available*' (nicht verfügbar) bedeutet. Zusätzlich wird eine Warnung ausgegeben, dass nicht-numerische Daten in die Funktion *mean()* gefüttert wurden.
+
+Was würde der Aufruf von `mean(gemischter.vector)` für eine Ausgabe bewirken?[^LösungGemischterVektor]
+
+[^LösungGemischterVektor]: Der Aufruf von `mean(gemischter.vector)` ergibt dieselbe Ausgabe wie zuvor `mean(grossbuchstaben)`, nämlich eine Warnung und 'NA'. Da wir *gemischter.vector* mittels Verkettung von Zahlen und Text gefüttert haben, muss der Datentyp einheitlich *character* sein, also nicht-numerisch. 
+
+### Data frame (Tabellen)
+
+Eine sehr nützliche und weithin bekannte Struktur ist die  **Tabelle** (in **R** *data.frame* genannt):
+
+```{r}
+data.frame.beispiel <- data.frame(Zahlen = 40:eine.echte.zahl,
+                                 Text = ein.beispieltext,
+                                 text.der.aussieht.wie.eine.zahl)
+
+data.frame.beispiel
+```
+
+Anders als in Excel zum Beispiel, haben die Spalten jeweils einen einheitlichen Datentyp (wie beim Vektor). Das heißt, die gesamte Spalte "*Text*" im Beispiel oben hat den Datentyp **character**, jede 'Zelle' der Spalte "*Zahlen*" hat den Typ **numeric**.
+
+Tabellen haben eindeutige Spaltennamen, Spaltennummern und Zeilennummern, mit denen die Daten darin addressiert werden können. Dafür gibt es verschiedene Möglichkeiten, hier ein paar Beispiele:
+
+```{r}
+print("Der Wert vor dem Komma in eckigen Klammern adressiert die Zeilen der Tabelle, ...")
+data.frame.beispiel[3, ] # nur die dritte Zeile der Tabelle
+
+print("... der Wert hinter dem Komma adressiert die Spalten (wahlweise Name oder Nummer)")
+data.frame.beispiel[, "Zahlen"] # alle Werte aus Spalte "Zahlen"
+data.frame.beispiel[1, 1] # Wert aus Zeile 1, Spalte 1
+```
+
+Extrem mächtige und dabei sehr einfach zu bedienende Werkzeuge zum Filtern und Manipulieren von Tabellen lernen wir in einem späteren Kapitel[^UnderConstruction] noch kennen, wenn es um *tidy data* geht.
+
+[^UnderConstruction]: ... falls ich mich dazu aufraffe, dieses Kapitel zu schreiben. Ansporn in Form von Feedback (positiv, negativ, hauptsache konstruktiv) ist sehr willkommen!
 
 # Geodaten in **R**
 
 Geodaten werden standardmäßig nicht von R unterstützt, doch Dank einer großen, freundlichen, kompetenten Community gibt es eine riesige Menge an Erweiterungen (sogenannte *Packages*), mit denen sich der Funktionsumfang den eigenen Bedürfnissen anpassen lässt.
 
-Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt das komfortable Laden, Editieren und Speichern von Geodaten (Points, Lines, Polygons, ...) mit Hilfe von bekannten Tools aus dem GIS-Werkzeugkasten (Puffer, Union, Projezieren, ...). All diese Werkzeuge kommen natürlich als R-Funktionen daher und beginnen mit "*st_*".
+Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt das komfortable Laden, Manipulieren und Speichern von Geodaten (Points, Lines, Polygons, ...) mit Hilfe von bekannten Tools aus dem GIS-Werkzeugkasten (Puffer, Union, Projezieren, ...). All diese Werkzeuge kommen natürlich als R-Funktionen daher und beginnen mit "*st_*"[^st].
+
+[^st]: 'st' steht für spatial/temporal...
 
 Ein weiteres Package **mapview** ermöglicht die dynamische Visualisierug von Geodaten.
 
@@ -110,9 +217,10 @@ mapview(ein.polygon)
 
 ## Beispiel 2:
 
-Wir wollen aber Geodaten verarbeiten, nicht nur angucken. z.B. Transformieren in UTM32, Puffer, Clip, Visualisieren
+Wir wollen aber Geodaten verarbeiten, nicht nur angucken.
+Wie wäre es zum Beispiel mit einer Transformation in *UTM32*, Puffern, Clippen und anschließendem Visualisieren?
 
-Im Folgenden werden nacheinander verschiedene Geo-Verarbeitungsschritte vorgenomen, was entweder erfordert, dass man das Ergebnis jedes Zwischenschritts in einer Variable speichert und damit im nächsten Schritt weiter macht ...
+Im Folgenden werden nacheinander verschiedene Geo-Verarbeitungsschritte vorgenomen, was entweder erfordert, dass man das Ergebnis jedes Zwischenschritts in einer eigenen Variable speichert und mit dieser im nächsten Schritt weiter macht ...
 
 ```{r, warning=FALSE}
 # Transformation:
@@ -125,8 +233,8 @@ clipped           <- st_difference(x = ein.puffer, y = ein.polygon.utm32)
 mapview(clipped)
 ```
 
-... oder aber, man nutzt eine wunderbare Abkürzung, den sogenannten Pipe-Operator **%>%**.
-Damit kann man eine Abfolge von Operationen bauen, bei der immer das Ergebnis aus dem Vorhergehenden Schritt die Eingabe für den nächsten Schritt ist:
+... oder aber, man nutzt eine wunderbare Abkürzung, den sogenannten Pipe-Operator `%>%`.
+Damit kann man eine Abfolge von Operationen bauen, bei der immer das Ergebnis aus dem vorhergehenden Schritt die Eingabe für den nachfolgenden Schritt ist:
 
 
 
@@ -146,7 +254,7 @@ Wollen wir einen Multi-Buffer durchführen, können wir uns eine eigene Funktion
 ```{r}
 st_multibuffer <- function(x, list.of.distances) { # Name und Argumente unserer Funktion
   
-  # Hier, im 'body' der Funktion, wird in Form eines Mini-Skripts zusammengefasst, was die Funktion mit den ihr übergebenen Argumenten tun soll:
+  # Hier, im 'body' der Funktion, wird in Form eines Mini-Skripts zusammengefasst, was die Funktion mit den Argumenten tun soll:
   
   # Iterieren der Puffer-Funktion über die Werte-Liste mittels der Schleifen-Funktion lapply():
 list.of.buffer.rings <- lapply(list.of.distances,
@@ -160,7 +268,11 @@ bound <- do.call("rbind", list.of.buffer.rings) %>%
 # Was die Funktion schließlich ausgeben soll:
 return(bound)
 }
+```
 
+OK, eine eigene Funktion `st_multibuffer()` ist definiert und kann nun angewendet werden:
+
+```{r}
 # laden eines herzförmigen Polygons aus einer .shp-Datei:
 heart.utm32 <- st_read("NI_heart.shp") %>%
   st_transform(32632)
@@ -171,7 +283,7 @@ pufferdistanzen.um.herz <- list(riesig = 5000,
                  klein  = 100,
                  winzig = 10)
 
-# Ausführen der Funktion, plotten der Karte:
+# Ausführen der Funktion und Ausgabe des Resultats als dynamische Karte:
 st_multibuffer(heart.utm32, pufferdistanzen.um.herz) %>%
   mapview(zcol = "dist")
 ```
