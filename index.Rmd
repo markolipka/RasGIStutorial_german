@@ -164,25 +164,35 @@ Was würde der Aufruf von `mean(gemischter.vector)` für eine Ausgabe bewirken?[
 Eine sehr nützliche und weithin bekannte Struktur ist die  **Tabelle** (in **R** *data.frame* genannt):
 
 ```{r}
-data.frame.beispiel <- data.frame(Zahlen = 40:eine.echte.zahl,
+data.frame.beispiel <- data.frame(Zahlen = 23:42,
                                  Text = ein.beispieltext,
-                                 text.der.aussieht.wie.eine.zahl)
+                                 mehrText = "42")
 
 data.frame.beispiel
 ```
 
+Der Code produziert eine Tabelle mit 20 Zeilen, da die erste Spalte die Zahlen 23 bis 42 enthalten soll. Die beiden weiteren Spalten wurden jeweils mit nur einem einzelnen Wert gefüttert, der folglich einfach immer wiederholt wird.
+
 Anders als in Excel zum Beispiel, haben die Spalten jeweils einen einheitlichen Datentyp (wie beim Vektor). Das heißt, die gesamte Spalte "*Text*" im Beispiel oben hat den Datentyp **character**, jede 'Zelle' der Spalte "*Zahlen*" hat den Typ **numeric**.
 
-Tabellen haben eindeutige Spaltennamen, Spaltennummern und Zeilennummern, mit denen die Daten darin addressiert werden können. Dafür gibt es verschiedene Möglichkeiten, hier ein paar Beispiele:
+Tabellen haben **eindeutige** Spaltennamen, Spaltennummern und Zeilennummern, mit denen die Daten darin addressiert werden können. Dafür gibt es verschiedene Möglichkeiten, hier ein paar Beispiele für das Auslesen von einzelnen Spalten, Zeilen und Zellen mittels Indices:
 
 ```{r}
-print("Der Wert vor dem Komma in eckigen Klammern adressiert die Zeilen der Tabelle, ...")
+# Der Wert vor dem Komma in eckigen Klammern adressiert die Zeilen der Tabelle ...
 data.frame.beispiel[3, ] # nur die dritte Zeile der Tabelle
+```
 
-print("... der Wert hinter dem Komma adressiert die Spalten (wahlweise Name oder Nummer)")
+```{r}
+#... der Wert hinter dem Komma adressiert die Spalten (wahlweise Name oder Nummer).
 data.frame.beispiel[, "Zahlen"] # alle Werte aus Spalte "Zahlen"
+```
+
+```{r}
+# Gibt man beide Werte an, Zeile und Spalte, erhält man den Wert aus dieser Zelle:
 data.frame.beispiel[1, 1] # Wert aus Zeile 1, Spalte 1
 ```
+
+
 
 Extrem mächtige und dabei sehr einfach zu bedienende Werkzeuge zum Filtern und Manipulieren von Tabellen lernen wir in einem späteren Kapitel[^UnderConstruction] noch kennen, wenn es um *tidy data* geht.
 
@@ -192,7 +202,7 @@ Extrem mächtige und dabei sehr einfach zu bedienende Werkzeuge zum Filtern und 
 
 Geodaten werden standardmäßig nicht von R unterstützt, doch Dank einer großen, freundlichen, kompetenten Community gibt es eine riesige Menge an Erweiterungen (sogenannte *Packages*), mit denen sich der Funktionsumfang den eigenen Bedürfnissen anpassen lässt.
 
-Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt das komfortable Laden, Manipulieren und Speichern von Geodaten (Points, Lines, Polygons, ...) mit Hilfe von bekannten Tools aus dem GIS-Werkzeugkasten (Puffer, Union, Projezieren, ...). All diese Werkzeuge kommen natürlich als R-Funktionen daher und beginnen mit "*st_*"[^st].
+Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt das komfortable Laden, Manipulieren und Speichern von Geodaten (Points, Lines, Polygons, ...) mit Hilfe von bekannten Tools aus dem GIS-Werkzeugkasten (Puffer, Union, Projezieren, ...). Diese Werkzeuge kommen natürlich als R-Funktionen daher --- wie fast alles in **R** --- und beginnen mit "*st_*"[^st] (z.B. *st_buffer()*).
 
 [^st]: 'st' steht für spatial/temporal...
 
