@@ -32,7 +32,7 @@ Kommentare sind wichtig, um den Programmcode zu erläutern[^Kommentare]. Andere 
 
 Programmieren lernt man am besten durch Machen... also ran an die Tasten, die Beispiele nachvollziehen und spielen!  
 In Konsolenfenstern wie diesen kannst du es einfach ausprobieren, 
-stell sie dir wie eine Zelle in einem Excel-Sheet vor (nur ohne dass man ein "=" voranstellt und eben viel cooler ;-):
+stell' sie Dir wie eine Zelle in einem Excel-Sheet vor (nur ohne dass man ein "=" voranstellt und eben viel cooler ;-):
 
 ```{r playground, exercise=TRUE}
 # Benutze die Konsole als Taschenrechner und berechne 2*3*7!
@@ -245,7 +245,7 @@ Extrem mächtige und dabei sehr einfach zu bedienende Werkzeuge zum Filtern und 
 
 [^UnderConstruction]: ... falls ich mich dazu aufraffe, dieses Kapitel zu schreiben. Ansporn in Form von Feedback (positiv, negativ, hauptsache konstruktiv) ist sehr willkommen!
 
-# Geodaten in **R**
+## Geodaten in **R**
 
 Geodaten werden standardmäßig nicht von R unterstützt, doch Dank einer großen, freundlichen, kompetenten Community gibt es eine riesige Menge an Erweiterungen (sogenannte *Packages*), mit denen sich der Funktionsumfang den eigenen Bedürfnissen anpassen lässt.
 
@@ -255,7 +255,7 @@ Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt
 
 Ein weiteres Package **mapview** ermöglicht die dynamische Visualisierug von Geodaten.
 
-## Ein einfaches Beispiel:
+### Ein einfaches Beispiel:
 
 Laden und visualisieren eines Polygons aus einem shp-File.
 
@@ -272,7 +272,7 @@ mapview(ein_polygon)
 ```
 
 
-## Beispiel 2:
+### Beispiel 2:
 
 Wir wollen aber Geodaten verarbeiten, nicht nur angucken.
 Wie wäre es zum Beispiel mit einer Transformation in *UTM32*, Puffern, Clippen und anschließendem Visualisieren?
@@ -304,7 +304,7 @@ ein_polygon %>%
 
 ```
 
-## noch ein Beispiel, schon recht fortgeschritten:
+### noch ein Beispiel, schon recht fortgeschritten:
 
 Wollen wir einen Multi-Buffer durchführen, können wir uns eine eigene Funktion schreiben, die genau das tut, was wir wollen.
 
