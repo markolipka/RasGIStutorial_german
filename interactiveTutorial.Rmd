@@ -40,6 +40,10 @@ stell' sie Dir wie eine Zelle in einem Excel-Sheet vor (nur ohne dass man ein "=
 
 ```
 
+```{r playground-solution}
+2*3*7
+```
+
 
 Ein sehr einfaches **R**-Skript:
 
@@ -97,15 +101,49 @@ Im obigen Skript wird
  
  Beachte: Das Ergebniss der ersten Zeile wird nicht ausgegeben sondern in die Variable *summe* geschrieben. Die zweite Zeile hingegen schreibt nicht in eine Variable sondern gibt ihr Ergebnis auf dem Bildschirm aus.
 
-```{r}
-# try it out
+```{r reihensumme, exercise=TRUE}
+# Gib die Zahlen von 1 bis 100 auf der Konsole aus:
 
-# gebe die zahlen von 1 bis 100 auf der Konsole aus
-#Tip: Eine Reihe von Zahlen kann man in R mit der Schreibweise n:m erzeugen, wobei die resultierende Zahlenreihe bei n beginnt und solange 1 rauf oder runter zählt, bis m erreicht ist.
+# Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
 
-# schreibe das ergebnis in eine variable namens 'eins_bis_hundert'
+# Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
 
-# bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum()
+```
+
+```{r reihensumme-hint-1}
+# Gib die Zahlen von 1 bis 100 auf der Konsole aus:
+1:...
+# Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
+
+# Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
+
+```
+
+```{r reihensumme-hint-2}
+# Gib die Zahlen von 1 bis 100 auf der Konsole aus:
+1:100
+# Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
+eins_bis_hundert <- ...
+# Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
+
+```
+
+```{r reihensumme-hint-3}
+# Gib die Zahlen von 1 bis 100 auf der Konsole aus:
+1:00
+# Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
+eins_bis_hundert <- 1:100
+# Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
+...(eins_bis_hundert)
+```
+
+```{r reihensumme-solution}
+# Gib die Zahlen von 1 bis 100 auf der Konsole aus:
+1:100
+# Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
+eins_bis_hundert <- 1:100
+# Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
+sum(eins_bis_hundert)
 ```
 
 
@@ -270,6 +308,17 @@ ein_polygon <- st_read(dsn = "exp.shp") # "dsn" steht für data source name
 # Visualisieren mit mapview():
 mapview(ein_polygon)
 ```
+
+```{r KarteLadenPlotten, exercise = TRUE}
+library(sf) # lade das sf Package
+library(mapview) # lade das mapview Package
+
+# Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
+
+# Visualisieren mit mapview():
+
+```
+
 
 
 ### Beispiel 2:
