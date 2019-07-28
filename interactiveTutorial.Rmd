@@ -309,7 +309,7 @@ ein_polygon <- st_read(dsn = "exp.shp") # "dsn" steht für data source name
 mapview(ein_polygon)
 ```
 
-```{r KarteLadenPlotten, exercise = TRUE}
+```{r KarteLadenPlotten, exercise=TRUE}
 library(sf) # lade das sf Package
 library(mapview) # lade das mapview Package
 
@@ -319,7 +319,15 @@ library(mapview) # lade das mapview Package
 
 ```
 
+```{r KarteLadenPlotten-solution}
+library(sf) # lade das sf Package
+library(mapview) # lade das mapview Package
 
+# Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
+heart <- st_read("NI_heart.shp")
+# Visualisieren mit mapview():
+mapview(heart)
+```
 
 ### Beispiel 2:
 
