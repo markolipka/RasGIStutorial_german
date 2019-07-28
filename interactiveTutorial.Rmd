@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, results = "hold", comment = NA)
 
 # **R**-Grundlagen:
 
-## Skripte:
+## Skripte
 
 Skripte sind Programme die in *Skriptsprachen* geschrieben sind. Es sind Textdateien die mit einem normalen Texteditor bearbeitet werden können. Diese Skripte werden vom *Interpreter* der jeweiligen Sprache *ausgeführt*. Man könnte also im Windows-Editor **R**-Skripte schreiben, die man dann mit dem **R**-*Interpreter* (muss man zunächst [installieren](http://www.r-project.org)) *ausführt*. Viel schöner ist es aber, in einer sogenannten Entwicklungsumgebung zu arbeiten, die Editor, Interpreter, Hilfeseiten und viele, viele kleine und große Helferlein in sich vereint. Für **R** kann ich uneingeschränkt die Entwicklungsumgebung [**RStudio**](http://www.rstudio.com) empfehlen, sie ist sehr gut.
 
