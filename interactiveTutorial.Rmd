@@ -9,7 +9,7 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = TRUE, results = "hold", comment = NA)
-try(setwd("/srv/shiny-server/RasGIStutorial_german"), silent = TRUE)
+wd <- "/srv/shiny-server/RasGIStutorial_german"
 ```
 
 # **R**-Grundlagen:
@@ -311,11 +311,12 @@ mapview(ein_polygon)
 ```
 
 ```{r KarteLadenPlotten, exercise=TRUE}
+setwd(wd) # Arbeitsverzeichnis festlegen, nicht so wichtig...
 library(sf) # lade das sf Package
 library(mapview) # lade das mapview Package
 
 # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-
+st_read("NI_heart.shp")
 # Visualisieren mit mapview():
 
 ```
@@ -325,9 +326,9 @@ library(sf) # lade das sf Package
 library(mapview) # lade das mapview Package
 
 # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-heart <- st_read("NI_heart.shp")
+Herz_Niedersachsens <- st_read("NI_heart.shp")
 # Visualisieren mit mapview():
-mapview(heart)
+mapview(Herz_Niedersachsens)
 ```
 
 ### Beispiel 2:
