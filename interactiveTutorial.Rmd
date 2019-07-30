@@ -9,6 +9,11 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = TRUE, results = "hold", comment = NA)
+
+flurstuecksflaechen_ha <- c(Horst     = 0.23, 
+                            Ingeborg  = 42.000000,
+                            Jaqueline = 11.111111,
+                            Kurti     = 12.345678)
 wd <- "/srv/shiny-server/RasGIStutorial_german"
 ```
 
@@ -22,26 +27,24 @@ Skripte sind Programme die in *Skriptsprachen* geschrieben sind. Es sind Textdat
 Ein Programm oder Skript ist also eine Abfolge von Anweisungen, die der *Interpreter* so übersetzt, dass der Computer sie *ausführen* kann. So wie Dein Hirn eine Dir bekannte Fremdsprache so übersetzt, dass Du mit dem Gesagten etwas anfangen kannst. Was genau der Interpreter anstellt, ist nicht wichtig. Entscheidend ist, dass wir eine Sprache lernen wollen, mit der wir dem Computer beibringen können, Dinge für uns zu tun...
 
 Jede Programmiersprache ermöglicht zudem das einfügen von Kommentaren, die vom *Interpreter* ignoriert werden. In **R** werden Kommentare von einem `#`-Zeichen eingeleitet.
-Kommentare sind wichtig, um den Programmcode zu erläutern[^Kommentare]. Andere Menschen oder das zukünftige Selbst[^Selbst] können es sonst schwer haben, das Programm zu verstehen.
-
-[^Kommentare]: Kommentare sollen den Programmcode erläutern, nicht noch einmal beschreiben, was der Code tut. Gut geschriebener Code erklärt sich bestenfalls selbst. Die Kommentare erläutern zusätzlich die Absichten, Fallstricke, Pläne und Gedanken des Autors. 
-
-[^Selbst]: Es ist bemerkenswert, wie wenig Zeit es braucht, bis man seinen eigenen Code nicht mehr versteht.
+Kommentare sind wichtig, um den Programmcode zu erläutern, andere Menschen oder das zukünftige Selbst können es sonst schwer haben, das Programm zu verstehen.  
+Kommentare sollen den Programmcode erläutern, nicht noch einmal beschreiben, was der Code tut. Gut geschriebener Code erklärt sich bestenfalls selbst. Die Kommentare geben zusätzlich Aufschluss über die Absichten und Gedanken des Autors sowie z.B. Fallstricke, in die er schon gestolpert ist. 
+Wie wichtig Kommentare sind, realisiert man z.B. während man seinen eigenen Code von letzter Woche nicht mehr versteht.
 
 > `Die folgenden Beispiele zeigen Programmcode im grau hinterlegten Kasten.`  
 > Die zugehörige Ausgabe (falls es eine gibt) findet sich jeweils im Kasten darunter.
 
 Programmieren lernt man am besten durch Machen... also ran an die Tasten, die Beispiele nachvollziehen und spielen!  
 In Konsolenfenstern wie diesen kannst du es einfach ausprobieren, 
-stell' sie Dir wie eine Zelle in einem Excel-Sheet vor (nur ohne dass man ein "=" voranstellt und eben viel cooler ;-):
+stell' sie Dir wie eine Zelle in einem Excel-Sheet vor (nur ohne dass man ein "=" voranstellt und eben viel cooler ;-). Ausgeführt wird der Code per Klick auf den "Run Code"-Button oben rechts an der Konsole oder per Tastenkombination **Alt** + **Enter**:
 
-```{r playground, exercise=TRUE}
-# Benutze die Konsole als Taschenrechner und berechne 2*3*7!
-
+```{r playground, exercise=TRUE, exercise.lines = 2}
+# Benutze die Konsole als Taschenrechner und berechne 2*3*7!:
 
 ```
 
 ```{r playground-solution}
+# Benutze die Konsole als Taschenrechner und berechne 2*3*7!:
 2*3*7
 ```
 
@@ -70,6 +73,24 @@ Ausgaben in **R** werden nummeriert und die Nummer des ersten Elements jeder Zei
 ## Tip: dies könnte später in einer Übung nützlich sein =)
 ```
 
+Mal sehen, ob schon was hängen geblieben ist:
+
+```{r Kommentare-zeichen, echo=FALSE}
+question("Welches Zeichen leitet in R-Code Kommentare ein?",
+         answer("#", correct = TRUE),
+         answer("!!!", message = "Nein, damit beendet man Sätze in Internet-Diskussionen."),
+         answer(" =", message = "Ganz falsch, auch wenn's ein bisschen Ähnlichkeit hat."),
+         answer("💩", message = "Nein, das ist für was anderes gut..."))
+```
+
+```{r Kommentare-wichtig, echo=FALSE}
+question("Wofür sind Kommentare in Programmiersprachen gedacht?",
+  answer("Zum deaktivieren von unnützen Codezeilen, die man aber noch nicht löschen möchte.", message = "Ja, man kann Code-Zeilen auch auskommentieren, also durch das Voranstellen des Kommentar-Zeichens deaktivieren. Das ist aber nicht der Zweck von Kommentaren!"),
+  answer("Zur Ergänzungen von Gedanken, Notizen und hilfreichen Bemerkungen für das Verständnis des Codes.", correct = TRUE),
+  answer("Nur für Anfänger, Profis brauchen das nicht.", message = "Ganz im Gegenteil: Anfänger verzichten oft leichtfertig auf Kommentare und lernen ihren Wert erst mit der Zeit zu schätzen."),
+  answer("Deine Mutter!", message = "Äh, ja... Versuch's nochmal.")
+)
+```
 
 ## Variablen
 
@@ -86,9 +107,11 @@ eine_zahl
 ```
 
 
-Als Variablenname ist alles erlaubt, was mit einem Buchstaben beginnt[^Ausnahmen]. Man sollte allerdings keine Namen verwenden, die bereits vergeben sind (Funktionennamen, '*TRUE*' und '*FALSE*', ...), das kann sonst unerwartetes Verhalten des Programms hervorrufen. Aussagekräftige Variablennamen helfen sehr beim Verständnis des Programmcodes!
+Als Variablenname ist alles erlaubt, was mit einem Buchstaben beginnt. Es gibt gewisse Ausnahmen: so dürfen Variablen z.B. auch mit einem '.' oder '_' beginnen. Ziffern, Rechen- und Vergleichsoperatoren ('+', '<', '=', ...) sind aber tabu!.
+Man sollte außerdem keine Namen verwenden, die bereits vergeben sind (Funktionennamen, '*TRUE*' und '*FALSE*', ...), das kann sonst unerwartetes Verhalten des Programms hervorrufen.
 
-[^Ausnahmen]: Es gibt gewisse Ausnahmen: so dürfen Variablen z.B. auch mit einem '.' oder '_' beginnen. Ziffern, Rechen- und Vergleichsoperatoren ('+', '<', '=', ...) sind aber tabu!
+Aussagekräftige Variablennamen helfen sehr beim Verständnis des Programmcodes! Zusammen mit ordentlichen Kommentaren machen verständliche Variablennamen DEN Unterschied zwischen Code, der NUR vom Computer verstanden wird (wenn überhaupt) und Quelltext, den auch ein Programmierer nachvollziehen kann. 
+
 
 ```{r}
 summe <- eine_zahl + 19
@@ -102,7 +125,42 @@ Im obigen Skript wird
  
  Beachte: Das Ergebniss der ersten Zeile wird nicht ausgegeben sondern in die Variable *summe* geschrieben. Die zweite Zeile hingegen schreibt nicht in eine Variable sondern gibt ihr Ergebnis auf dem Bildschirm aus.
 
-```{r reihensumme, exercise=TRUE}
+Eine Fingerübung:
+
+```{r VariablenZahl, exercise = TRUE}
+# Schreibe eine beliebige Zahl in die Variable 'zahl' ...
+...
+# ... und gib diese Zahl auf der Konsole aus:
+zahl # Ausgabe der gewählten Zahl auf der Konsole
+```
+
+
+
+
+## Funktionen
+
+In **R** wird fast alles mit *Funktionen* erledigt. Als Excel-User ist man mit dem Konzept bereits vertraut. In **R** funktioniert das eigentlich genauso, nur das es viel mehr Funktionen gibt. Funktionen nehmen meistens wenigstens eine Eingabe entgegen, tun damit etwas (was normalerweise im Zusammenhang mit dem Funktionsnamen steht) und geben in der Regel ein Ergebnis zurück.
+
+Die Funktion `round()` zum Beispiel rundet einen numerischen Wert:
+
+```{r}
+round(1.234)
+```
+
+Probier ein wenig herum! Welche Funktion könnte die Summe einer Reihe von Zahlen ausgeben?
+
+```{r Funktionen, exercise = TRUE}
+...(1, 2, 3)
+```
+
+```{r Funktionen-solution}
+sum(1, 2, 3)
+```
+
+
+Das wenden wir doch gleich mal an (wenn Du nicht weiter kommst, drück den Hint-Button für Hinweise):
+
+```{r reihensumme, exercise=TRUE, exercise.lines = 6}
 # Gib die Zahlen von 1 bis 100 auf der Konsole aus:
 
 # Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
@@ -113,7 +171,7 @@ Im obigen Skript wird
 
 ```{r reihensumme-hint-1}
 # Gib die Zahlen von 1 bis 100 auf der Konsole aus:
-1:...
+von:bis
 # Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
 
 # Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
@@ -131,7 +189,7 @@ eins_bis_hundert <- ...
 
 ```{r reihensumme-hint-3}
 # Gib die Zahlen von 1 bis 100 auf der Konsole aus:
-1:00
+1:100
 # Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
 eins_bis_hundert <- 1:100
 # Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
@@ -147,25 +205,67 @@ eins_bis_hundert <- 1:100
 sum(eins_bis_hundert)
 ```
 
+Du kennst nun die Funktionen `sum()` und `round()`.
+Löse damit folgende Aufgabe:  
+Die Variable `flurstuecksflaechen_ha` enthält die Flächenmaße einer Reihe von Flurstücken in einem Windeignungsgebiet. Ermittle die Gesamtfläche der Flurstücke, runde das Ergebnis und schreibe es in die Variable `gesamtflaeche_ha`.
 
-## Funktionen
+```{r RundeReihe, exercise = TRUE, exercise.lines = 6}
+# Schau dir den Inhalt der variable 'flurstuecksflaechen_ha' erst einmal an:
 
-In **R** wird fast alles mit *Funktionen* erledigt. Als Excel-User ist man mit dem Konzept bereits vertraut. In **R** funktioniert das eigentlich genauso, nur das es viel mehr Funktionen gibt. Funktionen nehmen meistens wenigstens eine Eingabe entgegen, tun damit etwas (was normalerweise im Zusammenhang mit dem Funktionsnamen steht) und geben in der Regel ein Ergebnis zurück. Die Funktion `round()` zum Beispiel rundet einen numerischen Wert:
+# Berechne die Summe aller Werte in dieser Variable und gebe das Ergebnis auf der Konsole aus:
 
-```{r}
-round(x = 1.234, digits = 1)
+# Erweitere die Code-Zeile so, dass die Summe gerundet wird. Gib das Ergebnis auf der Konsole aus:
+
 ```
 
-Die Teile innerhalb der Klammer sind die *Argumente* der Funktion. Im obigen Beispiel werden der Funktion `round()` zwei Argument mitgegeben, die zu rundende Zahl (*x*) und die Anzahl Dezimalstellen (*digits*) auf die gerundet werden soll.
-
-```{r}
-### try it out 
-
-# du kennst bereits die Funktionen sum() und round(). 
-# Die Variable 'flurstuecksflaechen_ha' enthält die Flächenmaße einer Reihe von Flurstücken in einem Windeignungsgebiet. Ermittle die Gesamtfläche der Flurstücke, gerundet auf 2 Stellen nach dem Komma, und schreibe das Ergebnis in die Variable 'gesamtflaeche_ha'.
-# Tip: Die Anzahl an Nachkommastellen, auf die round() runden soll, wird mit dem Argument 'digits' angegeben.
+```{r RundeReihe-solution}
+# Schau dir den Inhalt der variable 'flurstuecksflaechen_ha' erst einmal an:
+flurstuecksflaechen_ha
+# Berechne die Summe aller Werte in dieser Variable und gebe das Ergebnis auf der Konsole aus:
+sum(flurstuecksflaechen_ha)
+# Erweitere die Code-Zeile so, dass die Summe gerundet wird. Gib das Ergebnis auf der Konsole aus:
+round(sum(flurstuecksflaechen_ha))
 ```
 
+Die Teile innerhalb der Klammer einer Funktion heißen *Argumente*.
+Funktionen haben oft mehrere Argumente, diese sind dann durch Kommata getrennt, können aber auch mit nur einem oder gar keinem Argument aufgerufen werden. Welche Argumente eine Funktion kennt, entnimmt man dem Handbuch, das es zu jeder Funktion gibt. Alternativ lässt man sich von der Auto-Vervollständigung seiner Entwicklungsumgebung (z.B. **RStudio**) helfen:
+
+```{r AutoCompletion, exercise = TRUE}
+# Tippe "round(" und anschließend die Tab-Taste (↹)
+
+# es sollte eine Auswahl der Argumente erscheinen, die die Funktion kennt.
+```
+
+
+Im folgenden Beispiel werden der Funktion `round()` *zwei* Argument mitgegeben, die zu rundende Zahl (*x*) und die Anzahl Dezimalstellen (*digits*) auf die gerundet werden soll. Die Argumente können, müssen aber nicht, mit ihrem Namen aufgerufen werden. 
+Wählt man die faule Variante (ohne Namen), muss man unbedingt auf die richtige **Reihenfolge der Argumente** achten.
+Am Anfang empfiehlt es sich, sicherheitshalber alle Argumente zu benennen. 
+
+```{r Argumente}
+# Aufruf mit Argument-Namen in der 'richtigen' Reihenfolge:
+round(x = 1.234, digits = 2) # empfohlen, gerade für Anfänger
+# Aufruf ohne Argument-Namen in der 'richtigen' Reihenfolge:
+round(1.234, 2) # faul und oft unverständlich
+# Aufruf teils mit, teils ohne Argument-Namen:
+round(1.234, digits = 2) # häufig, der Kompromiss
+
+
+# Aufruf mit Argument-Namen in anderer Reihenfolge:
+round(digits = 2, x = 1.234) # unüblich und verwirrend
+# Aufruf ohne Argument-Namen in FALSCHER Reihenfolge:
+round(2, 1.234) # sowas kommt von sowas, nämlich !!
+```
+
+Mal sehen, ob du alles Wichtige mitgeschnitten hast:
+
+```{r Funktionen-quiz, echo=FALSE}
+question("Welche Aussagen treffen für Funktionen der Programmiersprache R zu?",
+  answer("Eine Funktion kann mit mehreren Argumenten aufgerufen werden; dann muss man auf die richtige Reihenefolge oder die korrekte Benennung der Argumente achten.", correct = TRUE),
+  answer("Funktionen spielen in R nur eine untergeordnete Rolle.", message = "Nein, Funktionen sind ein ganz zentraler Bestandteil der Sprache R."), 
+  answer("Man muss jeder Funktion ein =-Zeichen voranstellen, damit sie korrekt ausgeführt wird.", message = "Das hast du wohl mit Excel verwechselt =)"), 
+  answer("Die Rückgabe einer Funktion, ihr Ergebnis, kann in einer Variable für die spätere Verwendung gespeichert werden.", correct = TRUE)
+)
+```
 
 ## Datentypen und -strukturen:
 
@@ -311,24 +411,27 @@ mapview(ein_polygon)
 ```
 
 ```{r KarteLadenPlotten, exercise=TRUE}
-setwd(wd) # Arbeitsverzeichnis festlegen, nicht so wichtig...
-library(sf) # lade das sf Package
-library(mapview) # lade das mapview Package
+setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
+library(sf) # sf Package laden
+library(mapview) # mapview Package laden
+# Ergänze den Code an den markierten stellen:
 
 # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-st_read("NI_heart.shp")
+... st_read("NI_heart.shp")
 # Visualisieren mit mapview():
-
+...
 ```
 
 ```{r KarteLadenPlotten-solution}
-library(sf) # lade das sf Package
-library(mapview) # lade das mapview Package
+setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
+library(sf) # sf Package laden
+library(mapview) # mapview Package laden
+# Ergänze den Code an den markierten stellen:
 
 # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-Herz_Niedersachsens <- st_read("NI_heart.shp")
+HerzNiedersachsens <- st_read("NI_heart.shp")
 # Visualisieren mit mapview():
-mapview(Herz_Niedersachsens)
+mapview(HerzNiedersachsens)
 ```
 
 ### Beispiel 2:
@@ -363,44 +466,16 @@ ein_polygon %>%
 
 ```
 
-### noch ein Beispiel, schon recht fortgeschritten:
 
-Wollen wir einen Multi-Buffer durchführen, können wir uns eine eigene Funktion schreiben, die genau das tut, was wir wollen.
+Jetzt bist Du wieder dran; editiere den Code so, dass anstelle der Geometrie **ein_polygon** das Herz-Polygon gepuffert wird. Lade dieses dazu bitte zunächst aus den Shape-files **NI_heart.shp** und wähle eine geeignete Pufferdistanz.
 
-```{r}
-st_multibuffer <- function(x, list_of_distances) { # Name und Argumente unserer Funktion
-  
-  # Hier, im 'body' der Funktion, wird in Form eines Mini-Skripts zusammengefasst, was die Funktion mit den Argumenten tun soll:
-  
-  # Iterieren der Puffer-Funktion über die Werte-Liste mittels der Schleifen-Funktion lapply():
-list_of_buffer_rings <- lapply(list_of_distances,
-                      function(distance) st_buffer(x, dist = distance))
+```{r HerzPuffer, exercise = TRUE}
+setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
 
-# Umbauen der Puffer-Ring-Liste zu einem data.frame ...
-bound <- do.call("rbind", list_of_buffer_rings) %>% 
-  # ... und Schreiben der Pufferdistanzen in die Attributtabelle:
-  mutate(dist = factor(rownames(.)))
-
-# Was die Funktion schließlich ausgeben soll:
-return(bound)
-}
+...("NI_heart.shp") %>% # Polygon einlesen
+  st_transform(crs = 32632) %>% # Transformation
+  st_buffer(dist = ...) %>% # Puffer
+  mapview() # Visualisierung
 ```
 
-OK, eine eigene Funktion `st_multibuffer()` ist definiert und kann nun angewendet werden:
-
-```{r}
-# laden eines herzförmigen Polygons aus einer .shp-Datei:
-heart_utm32 <- st_read("NI_heart.shp") %>%
-  st_transform(32632)
-
-# Definieren einer Liste von Werten, mit denen gepuffert werden soll:
-pufferdistanzen_um_herz <- list(riesig = 5000,
-                                groß   = 1000,
-                                klein  = 100,
-                                winzig = 10)
-
-# Ausführen der Funktion und Ausgabe des Resultats als dynamische Karte:
-st_multibuffer(heart_utm32, pufferdistanzen_um_herz) %>%
-  mapview(zcol = "dist")
-```
 
