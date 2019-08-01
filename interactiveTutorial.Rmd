@@ -14,7 +14,10 @@ flurstuecksflaechen_ha <- c(Horst     = 0.23,
                             Ingeborg  = 42.000000,
                             Jaqueline = 11.111111,
                             Kurti     = 12.345678)
+
 wd <- "/srv/shiny-server/RasGIStutorial_german"
+
+gemischter_vector <- c(3, 4, "fünf")
 ```
 
 # **R**-Grundlagen:
@@ -234,6 +237,8 @@ Funktionen haben oft mehrere Argumente, diese sind dann durch Kommata getrennt, 
 # Tippe "round(" und anschließend die Tab-Taste (↹)
 
 # es sollte eine Auswahl der Argumente erscheinen, die die Funktion kennt.
+# Für das Handbuch führe folgenden Befehl aus:
+?round
 ```
 
 
@@ -267,62 +272,114 @@ question("Welche Aussagen treffen für Funktionen der Programmiersprache R zu?",
 )
 ```
 
-## Datentypen und -strukturen:
+## Datentypen und -strukturen
 
-Es ist wichtig, darauf zu achten, was für eine Art Daten man verarbeitet. Es gibt neben numerischen Werten (*numeric*) und Zeichenketten (*character*) noch viele weitere, aber für den Anfang reichen uns die beiden wichtigsten.
+### Datentypen 
+
+Es ist wichtig, darauf zu achten, was für eine Art Daten man verarbeitet. Es gibt neben **numerischen Werten** (*numeric*) und **Zeichenketten** (*character*) noch viele weitere, aber für den Anfang reichen uns die beiden wichtigsten.
+
+#### Zeichenketten (*character*)
+
+Zeichenketten werden von Anführungszeichen gerahmt.
+Dabei ist egal, ob man einfache oder doppelte Anführungszeichen verwendet:
 
 ```{r}
-# Zeichenketten werden von Anführungszeichen gerahmt
-beispieltext <- "zweiundvierzig"
-text_der_aussieht_wie_eine_zahl <- "42"
-
-eine_echte_zahl <- 42 # das ist eine Zahl, man kann damit rechnen
-eine_echte_zahl + 0
+"zweiundvierzig"
+'zweiundvierzig'
 ```
+
+Text ohne Anführungszeichen wird als Variablenname interpretiert.
+Versuche doch mal, `zweiundvierzig` ohne Anführungszeichen auf der Konsole auszuführen:
+
+```{r TextOhneAnfuehrungszeichen, exercise = TRUE}
+zweiundvierzig # dies wird fehlschlagen!
+```
+
+Der Aufruf `zweiundvierzig` versucht, den Inhalt einer Variable `zweiundvierzig` auszugeben, nicht einen Textstring "zweiundvierzig". Sofern diese Variable nicht existiert, wird ein Fehler ausgegeben:
+
+> object 'zweiundvierzig' not found
+
+
+#### Numerische Werte (*numeric*)
+
+Numerische Werte benutzt man ohne weitere Kennzeichnung:
+
+```{r}
+eine_echte_zahl <- 42 # das ist eine Zahl...
+eine_echte_zahl + 0 # ... man kann damit rechnen
+```
+
+#### Übung
+
+```{r Datentypen, exercise = TRUE}
+# Gib die Werte aus den Variablen 
+eine_echte_zahl <- 42
+# und 
+text_der_aussieht_wie_eine_zahl <- "42"
+# auf der Konsole aus:
+
+# Erkenne den Unterschied zwischen numerischem Wert und Text!
+```
+
+### Datenstrukturen
 
 Daten können in ganz verschiedenen (und beinahe beliebig komplexen) Kombinationen und Strukturen angeordnet sein.
+In der einfachsten Form, steckt nur ein einzelner Wert in einer Variable.
 
-In der einfachsten Form, steckt nur ein einzelner Wert in einer Variable, so wie in den Beispielen *beispieltext* oder *eine_echte_zahl* oben.
+Das kann eine Zal sein ...:
 
 ```{r}
-# try it out
+nur_ein_Wert <- 42 # Erstellen einer Variable mit nur einem Wert
+nur_ein_Wert # Ausgabe des Inhalts
+```
 
-# Teile den Wert, der in 'eine_echte_zahl' steht, durch 9 und schreibe das Ergebnis in die variable 'neuntel_echte_zahl'
+... ein Wort ...:
 
-# runde den Wert in 'neuntel_echte_zahl' auf eine ganze Zahl.
-
-# versuche, den Wert aus 'text_der_aussieht_wie_eine_zahl' zu runden.
-# Verstehe die Fehlermeldung! Man sollte Fehler und Warnungen beachten denn sie sind als Hilfestellung für die Fehlersuche gedacht und sind tatsächlich meistens hilfreich! Als langjähriger Windows-Nutzer muss man sich allerdings erstmal daran gewöhnen, Fehlermeldungen wieder ernst zu nehmen.
+```{r}
+nur_ein_wort <- "zweiundvierzig"
+nur_ein_wort
 ```
 
 
-### Vector
+Oder ein Satz:
+
+```{r}
+ein_Satz <- "Die Antwort auf die Frage nach dem Leben, dem Universum und dem ganzen Rest"
+ein_Satz
+```
+
+
+#### Vektoren
 
 Oft werden aber auch Reihen von gleichartigen Werten in einer Variable ablegelt, sogenannte Vektoren (*vector*). Man kann sie auf verschiedene Arten generieren, meist durch das Verketten von Einzelelementen mithilfe der Funktion `c()` (*concatenate*).
-
 
 ```{r}
 drei_vier_und_fuenf <- c(3, 4, 5) # 'c' steht für concatenate (verknüpfen)
 drei_vier_und_fuenf # gibt die eben abgelegte Zahlenreihe aus
+```
 
+```{r}
 ganzzahlen_von_eins_bis_zehn <- 1:10 # die faule Variante, eine Zahlenreihe zu generieren
-ganzzahlen_von_eins_bis_zehn 
+ganzzahlen_von_eins_bis_zehn # Ausgabe des Inhalts auf der Konsole
+```
 
+```{r}
 grossbuchstaben <- c("A", "B", "C", "D") # ein vector vom Typ 'character'
 grossbuchstaben
 ```
 
-Eine wichtige Eigenschaft des Vektors ist, dass alle seine Elemente denselben Datentyp haben. Versuchen wir mal, einen Vektor mit verschiedenen Datentypen zu erstellen:
+Eine wichtige Eigenschaft des Vektors ist, dass alle seine Elemente **denselben Datentyp** haben.
+Versuche, einen Vektor mit verschiedenen Datentypen zu erstellen:
 
-```{r}
+```{r GemischterVektor, exercise = TRUE}
 gemischter_vector <- c(3, 4, "fünf")
-gemischter_vector
+# Gib den Inhalt von 'gemischter_vector' auf der Konsole aus:
+
+# Kannst du erkennen, welchen Datentyp der Vektor hat?
 ```
 
-**R** speichert dann alle Elemente in einem einheitlichen Datentyp.
-Kannst du erkennen, welchen Datentyp *gemischter.vector* hat und warum?[^Lösung1]
-
-[^Lösung1]: In die Variable *gemischter.vector* wurden zwei Zahlen (*numeric*) und ein Textstring (*character*) aneinandergekettet. In so einem Fall wählt **R** den Datentyp für den vector aus, in dem jeder Wert ohne Informatiosverlust gespeichert werden kann, nämlich *character*. Der String "fünf" lässt sich nicht als *numeric* speichern, die Zahlen aber sehr wohl als *character*.
+Versucht man, in einen Vektor Elemente verschiedener Datetypen zu schreiben, speichert **R** alle Elemente in einem einheitlichen Datentyp.
+In die Variable `gemischter.vector` wurden zwei Zahlen (3 und 4: *numeric*) und ein Textstring ("fünf": *character*) aneinandergekettet. In so einem Fall wählt **R** den Datentyp für den vector aus, in dem jeder Wert ohne Informatiosverlust gespeichert werden kann, nämlich *character*. Der String "fünf" lässt sich nicht als *numeric* speichern, die Zahlen aber sehr wohl als *character*.
 
 Mit Vektoren vom Typ *numeric* kann man rechnen:
 
@@ -333,7 +390,7 @@ mean(ganzzahlen_von_eins_bis_zehn)
 ```
 
 
-Enthält der Vektor Daten vom Typ *character*, sind numerische Operationen nicht möglich:
+Mit einem Vektor vom Typ *character* sind numerische Operationen nicht möglich:
 
 ```{r}
 mean(grossbuchstaben)
@@ -341,100 +398,120 @@ mean(grossbuchstaben)
 
 Das Ergebnis des Versuchs, den Mittelwert aus einer Reihe von Buchstaben zu bilden, ist **NA**, was so viel wie '*not applicable*' (nicht anwendbar, nicht zutreffend) oder '*not available*' (nicht verfügbar) bedeutet. Zusätzlich wird eine Warnung ausgegeben, dass nicht-numerische Daten in die Funktion *mean()* gefüttert wurden.
 
-Was würde der Aufruf von `mean(gemischter_vector)` für eine Ausgabe bewirken?[^LösungGemischterVektor]
 
-[^LösungGemischterVektor]: Der Aufruf von `mean(gemischter.vector)` ergibt dieselbe Ausgabe wie zuvor `mean(grossbuchstaben)`, nämlich eine Warnung und 'NA'. Da wir *gemischter_vector* mittels Verkettung von Zahlen und Text gefüttert haben, muss der Datentyp einheitlich *character* sein, also nicht-numerisch. 
+```{r MeanGemischterVektor-quiz, echo=FALSE}
+question("Was bewirkt der Aufruf von `mean(gemischter_vector)` für eine Ausgabe und warum? In der Konsole unter diesem Quiz kannst du es ausprobieren:",
+         answer("'NA' und eine Warnung, da der Vektor neben numerischen Werten auch Textstrings enthält.", message = "Vektoren können keine Elemente unterschiedlicher Datentypen enthalten, sie haben immer einen einheitlichen Datentyp! Der Vektor wurde zwar bei seiner Erstellung mit numerischen Werten und Textstrings gefüttert, die numerischen Werte wurden aber als *character*, also als Textstrings, gepeichert."),
+         answer("'NA' und eine Warnung, da der Vektor den Datentyp *character* hat, also nicht-numerisch ist.", correct = TRUE),
+         answer("4, den Mittelwert der Werte 3, 4 und 5.", message = "Nein, das ist nicht die Ausgabe des Aufrufs `mean(gemischter_vector)`. Benutze doch bitte die Konsole und probiere es aus...")
+)
+```
 
-### Data frame (Tabellen)
+```{r MeanGemischterVektor, exercise = TRUE}
+
+```
+
+```{r MeanGemischterVektor-solution}
+mean(gemischter_vector)
+```
+
+
+#### Tabellen (*data.frame*)
 
 Eine sehr nützliche und weithin bekannte Struktur ist die  **Tabelle** (in **R** *data.frame* genannt):
 
 ```{r}
-data.frame_beispiel <- data.frame(Zahlen = 23:42,
-                                 Text = beispieltext,
-                                 mehrText = "42")
+data.frame_beispiel <- data.frame(Zahlen = 41:43,
+           Text = c("Nicht die Antwort ...",
+                    "Die Antwort ...",
+                    "Nicht die Antwort ..."),
+           mehrText = "... auf die Frage nach dem Leben, dem Universum und dem ganzen Rest",
+           stringsAsFactors = FALSE)
 
 data.frame_beispiel
 ```
 
-Der Code produziert eine Tabelle mit 20 Zeilen, da die erste Spalte die Zahlen 23 bis 42 enthalten soll. Die beiden weiteren Spalten wurden jeweils mit nur einem einzelnen Wert gefüttert, der folglich einfach immer wiederholt wird.
+Der Code produziert eine Tabelle mit 3 Zeilen, da die erste Spalte (**Zahlen**) die Zahlen 41 bis 43 enthalten soll.
+Die zweite Spalte (**Text**) wird ebenfalls mit einem Vektor der Länge 3 gefüttert: `c("Nicht die Antwort ...", "Die Antwort ...", "Nicht die Antwort ...")`. 
+Der dritten Spalte (**mehrText**) wurde nur ein einzelner Wert mitgegeben, der folglich einfach in jeder Zeile wiederholt wird.
 
-Anders als in Excel zum Beispiel, haben die Spalten jeweils einen einheitlichen Datentyp (wie beim Vektor). Das heißt, die gesamte Spalte "*Text*" im Beispiel oben hat den Datentyp **character**, jede 'Zelle' der Spalte "*Zahlen*" hat den Typ **numeric**.
-
-Tabellen haben **eindeutige** Spaltennamen, Spaltennummern und Zeilennummern, mit denen die Daten darin addressiert werden können. Dafür gibt es verschiedene Möglichkeiten, hier ein paar Beispiele für das Auslesen von einzelnen Spalten, Zeilen und Zellen mittels Indices:
-
-```{r}
-# Der Wert vor dem Komma in eckigen Klammern adressiert die Zeilen der Tabelle ...
-data.frame_beispiel[3, ] # nur die dritte Zeile der Tabelle
-```
-
-```{r}
-#... der Wert hinter dem Komma adressiert die Spalten (wahlweise Name oder Nummer).
-data.frame_beispiel[, "Zahlen"] # alle Werte aus Spalte "Zahlen"
-```
-
-```{r}
-# Gibt man beide Werte an, Zeile und Spalte, erhält man den Wert aus dieser Zelle:
-data.frame_beispiel[1, 1] # Wert aus Zeile 1, Spalte 1
-```
+Anders als  zum Beispiel in Excel, haben die Spalten jeweils einen einheitlichen Datentyp (wie beim Vektor).
+Das heißt, die gesamte Spalte "**Text**" im Beispiel oben hat den Datentyp *character*, die Spalte "**Zahlen**" hat den Typ *numeric* (genauer gesagt *integer*, also *Ganze Zahl*).
 
 
+Tabellen haben **eindeutige** *Spaltennamen*, *Spaltennummern* und *Zeilennummern*, mit denen die Daten darin addressiert werden können (nicht unähnlich zu Excel aber schon deutlich anders).
+Extrem mächtige und dabei sehr einfach zu bedienende Werkzeuge zum Filtern und Manipulieren von Tabellen lernen wir in einem späteren Kapitel (*in Arbeit*) noch kennen, wenn es um **tidy data** geht.
 
-Extrem mächtige und dabei sehr einfach zu bedienende Werkzeuge zum Filtern und Manipulieren von Tabellen lernen wir in einem späteren Kapitel[^UnderConstruction] noch kennen, wenn es um *tidy data* geht.
-
-[^UnderConstruction]: ... falls ich mich dazu aufraffe, dieses Kapitel zu schreiben. Ansporn in Form von Feedback (positiv, negativ, hauptsache konstruktiv) ist sehr willkommen!
-
-## Geodaten in **R**
+## Geodaten in **R**: die Basics
 
 Geodaten werden standardmäßig nicht von R unterstützt, doch Dank einer großen, freundlichen, kompetenten Community gibt es eine riesige Menge an Erweiterungen (sogenannte *Packages*), mit denen sich der Funktionsumfang den eigenen Bedürfnissen anpassen lässt.
 
-Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt das komfortable Laden, Manipulieren und Speichern von Geodaten (Points, Lines, Polygons, ...) mit Hilfe von bekannten Tools aus dem GIS-Werkzeugkasten (Puffer, Union, Projezieren, ...). Diese Werkzeuge kommen natürlich als R-Funktionen daher --- wie fast alles in **R** --- und beginnen mit "*st_*"[^st] (z.B. *st_buffer()*).
-
-[^st]: 'st' steht für spatial/temporal...
+Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt das komfortable Laden, Manipulieren und Speichern von Geodaten (Points, Lines, Polygons, ...) mit Hilfe von bekannten Tools aus dem GIS-Werkzeugkasten (Puffer, Union, Projezieren, ...). Diese Werkzeuge kommen natürlich als R-Funktionen daher --- wie fast alles in **R** --- und beginnen mit "*st_*" (z.B. *st_buffer()*; 'st' steht für "spatial/temporal").
 
 Ein weiteres Package **mapview** ermöglicht die dynamische Visualisierug von Geodaten.
 
-### Ein einfaches Beispiel:
+### Ein WebGIS mit 4 Zeilen Code:
 
 Laden und visualisieren eines Polygons aus einem shp-File.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 library(sf) # lade das sf Package
 library(mapview) # lade das mapview Package
-library(tidyverse) # eine Sammlung großartiger Packete zur Handhabe 'sauberer Daten' (optional aber sehr empfehlenswert)
 
 # Laden eines shapefiles mit der st_read() Funktion und Ablegen in einer Variable:
-ein_polygon <- st_read(dsn = "exp.shp") # "dsn" steht für data source name
+ein_polygon <- st_read(dsn = "NI_exp.shp") # "dsn" steht für data source name
 
 # Visualisieren mit mapview():
 mapview(ein_polygon)
 ```
 
+Der simple Aufruf `mapview(ein_polygon)` generiert dieses kleine WebGIS für uns, inklusive:
+
+  - 5 voreingestellten Hintergrundkarten (Layer-Button)
+  - Maßstab (unten links)
+  - Feature-Abfrage-Funktion (Klick auf Feature)
+  - Quellenliste (unten rechts)
+  - ...
+  
+Ist das nicht toll?!?
+
+Jetzt bist Du dran! Lade das Shapefile *NI_heart.shp* in eine Variable deiner Wahl und plotte es mit der `mapview()`-Funktion.
+
 ```{r KarteLadenPlotten, exercise=TRUE}
 setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
 library(sf) # sf Package laden
 library(mapview) # mapview Package laden
-# Ergänze den Code an den markierten stellen:
 
+# Ergänze den Code an den markierten stellen:
 # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
 ... st_read("NI_heart.shp")
 # Visualisieren mit mapview():
 ...
 ```
 
+```{r KarteLadenPlotten-hint-1}
+# Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
+variablennameDeinerWahl <- st_read("NI_heart.shp")
+```
+
+```{r KarteLadenPlotten-hint-2}
+# Visualisieren mit mapview():
+mapview(variablennameDeinerWahl)
+```
+
 ```{r KarteLadenPlotten-solution}
 setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
 library(sf) # sf Package laden
 library(mapview) # mapview Package laden
-# Ergänze den Code an den markierten stellen:
 
+# Ergänze den Code an den markierten stellen:
 # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-HerzNiedersachsens <- st_read("NI_heart.shp")
+variablennameDeinerWahl <- st_read("NI_heart.shp")
 # Visualisieren mit mapview():
-mapview(HerzNiedersachsens)
+mapview(variablennameDeinerWahl)
 ```
 
-### Beispiel 2:
+### Geodatenverarbeitung:
 
 Wir wollen aber Geodaten verarbeiten, nicht nur angucken.
 Wie wäre es zum Beispiel mit einer Transformation in *UTM32*, Puffern, Clippen und anschließendem Visualisieren?
@@ -443,27 +520,31 @@ Im Folgenden werden nacheinander verschiedene Geo-Verarbeitungsschritte vorgenom
 
 ```{r, warning=FALSE}
 # Transformation:
-ein_polygon_utm32 <- st_transform(x = ein_polygon, crs = 32632)
-# Puffer
-ein_puffer        <- st_buffer(x = ein_polygon_utm32, dist = 222)
+ein_polygon_utm32 <- st_transform(x = ein_polygon, 
+                                  crs = 32632)
+# Puffern:
+ein_puffer        <- st_buffer(x = ein_polygon_utm32, 
+                               dist = 222)
 # Clip:
-clipped           <- st_difference(x = ein_puffer, y = ein_polygon_utm32)
-# Visualisierung
+clipped           <- st_difference(x = ein_puffer, 
+                                   y = ein_polygon_utm32)
+# Visualisierung:
 mapview(clipped)
 ```
 
-... oder aber, man nutzt eine wunderbare Abkürzung, den sogenannten Pipe-Operator `%>%`.
+... oder aber, man nutzt eine wunderbare Abkürzung, den sogenannten Pipe-Operator `%>%` (aus dem `tidyverse`-Package).
 Damit kann man eine Abfolge von Operationen bauen, bei der immer das Ergebnis aus dem vorhergehenden Schritt die Eingabe für den nachfolgenden Schritt ist:
 
 
 
-```{r, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse) # eine Sammlung großartiger Packete zur Handhabe 'sauberer Daten'
+
 ein_polygon %>%
   st_transform(crs = 32632) %>% # Transformation
   st_buffer(dist = 222) %>% # Puffer
   st_difference(st_transform(ein_polygon, crs = 32632)) %>% # Clip
   mapview() # Visualisierung
-
 ```
 
 
@@ -472,10 +553,19 @@ Jetzt bist Du wieder dran; editiere den Code so, dass anstelle der Geometrie **e
 ```{r HerzPuffer, exercise = TRUE}
 setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
 
+# Ergänze an den markierten Stellen:
 ...("NI_heart.shp") %>% # Polygon einlesen
   st_transform(crs = 32632) %>% # Transformation
   st_buffer(dist = ...) %>% # Puffer
   mapview() # Visualisierung
 ```
 
+```{r HerzPuffer-solution}
+setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
 
+# Ergänze an den markierten Stellen:
+st_read("NI_heart.shp") %>% # Polygon einlesen
+  st_transform(crs = 32632) %>% # Transformation
+  st_buffer(dist = 1000) %>% # Puffer
+  mapview() # Visualisierung
+```
