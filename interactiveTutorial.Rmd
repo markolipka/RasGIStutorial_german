@@ -442,7 +442,7 @@ Das heißt, die gesamte Spalte "**Text**" im Beispiel oben hat den Datentyp *cha
 Tabellen haben **eindeutige** *Spaltennamen*, *Spaltennummern* und *Zeilennummern*, mit denen die Daten darin addressiert werden können (nicht unähnlich zu Excel aber schon deutlich anders).
 Extrem mächtige und dabei sehr einfach zu bedienende Werkzeuge zum Filtern und Manipulieren von Tabellen lernen wir in einem späteren Kapitel (*in Arbeit*) noch kennen, wenn es um **tidy data** geht.
 
-## Geodaten in **R**: die Basics
+## Geodaten in **R** --- die Basics
 
 Geodaten werden standardmäßig nicht von R unterstützt, doch Dank einer großen, freundlichen, kompetenten Community gibt es eine riesige Menge an Erweiterungen (sogenannte *Packages*), mit denen sich der Funktionsumfang den eigenen Bedürfnissen anpassen lässt.
 
@@ -569,3 +569,10 @@ st_read("NI_heart.shp") %>% # Polygon einlesen
   st_buffer(dist = 1000) %>% # Puffer
   mapview() # Visualisierung
 ```
+
+
+## Tidy Data --- die Basics
+
+***Dieses Kapitel ist noch in Arbeit***
+
+*Konstruktive Kritik, Zuspruch und kaltes Bier könnten die Entstehung beschleunigen...*
