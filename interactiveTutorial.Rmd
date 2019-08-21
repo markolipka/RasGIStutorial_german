@@ -47,7 +47,7 @@ Du kannst Dir die Konsole wie eine Zelle in einem Excel-Sheet vorstellen (nur oh
 Ausgeführt wird der Code per Klick auf den "**Run Code**"-Button oben rechts an der Konsole.  
 ***Programmieren lernt man am besten durch Machen... also ran an die Tasten!***
 
-#### Konsole:
+#### Konsole: {#konsole}
 
 *Benutze die Konsole als Taschenrechner und berechne das Produkt aus 2, 3 und 7:*
 
