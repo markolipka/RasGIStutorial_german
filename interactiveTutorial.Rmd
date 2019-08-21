@@ -2,12 +2,18 @@
 title: "R als GIS — Eine kleine Einführung"
 author: "Marko Lipka"
 date: '2019-04-05'
-output: learnr::tutorial
+output:
+  learnr::tutorial:
+    highlight: kate
+    ace_theme: monokai
 runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
 library(learnr)
+library(sf)
+library(tidyverse)
+library(mapview)
 knitr::opts_chunk$set(echo = TRUE, results = "hold", comment = NA)
 
 flurstuecksflaechen_ha <- c(Horst     = 0.23, 
@@ -15,54 +21,72 @@ flurstuecksflaechen_ha <- c(Horst     = 0.23,
                             Jaqueline = 11.111111,
                             Kurti     = 12.345678)
 
-wd <- "/srv/shiny-server/RasGIStutorial_german"
+#wd <- "/srv/shiny-server/RasGIStutorial_german"
+#setwd(wd)
 
 gemischter_vector <- c(3, 4, "fünf")
+
+heart <- st_read("NI_heart.shp")
+exp <- st_read("NI_exp.shp")
 ```
 
 # **R**-Grundlagen:
 
 ## Skripte
 
-Skripte sind Programme die in *Skriptsprachen* geschrieben sind. Es sind Textdateien die mit einem normalen Texteditor bearbeitet werden können. Diese Skripte werden vom *Interpreter* der jeweiligen Sprache *ausgeführt*. Man könnte also im Windows-Editor **R**-Skripte schreiben, die man dann mit dem **R**-*Interpreter* (muss man zunächst [installieren](http://www.r-project.org)) *ausführt*. Viel schöner ist es aber, in einer sogenannten Entwicklungsumgebung zu arbeiten, die Editor, Interpreter, Hilfeseiten und viele, viele kleine und große Helferlein in sich vereint. Für **R** kann ich uneingeschränkt die Entwicklungsumgebung [**RStudio**](http://www.rstudio.com) empfehlen, sie ist sehr gut.
+Skripte sind Programme die in *Skriptsprachen* geschrieben sind.
+Sie bestehen aus einer Abfolge von Befehlen, die der Computer ausführen soll.
+Die Befehle liegen in Textform vor, so dass Skripte mit einem normalen Texteditor bearbeitet werden können.
+Diese Skripte werden vom *Interpreter* der jeweiligen Sprache *ausgeführt*.
+Man könnte also im Windows-Editor **R**-Skripte schreiben, die man dann mit dem **R**-*Interpreter* (muss man zunächst [installieren](http://www.r-project.org)) *ausführt*.
+Viel schöner ist es aber, in einer sogenannten Entwicklungsumgebung zu arbeiten, die Editor, Interpreter, Hilfeseiten und viele, viele kleine und große Helferlein in sich vereint. Für **R** kann ich uneingeschränkt die Entwicklungsumgebung [**RStudio**](http://www.rstudio.com) empfehlen, sie ist sehr gut.
 
+In diesem Tutorial brauchst Du aber weder Editor noch Interpreter installieren, eine Konsole zum Üben und Spielen gibt's nämlich gratis dazu!
+In den Konsolenfenstern (wie unter diesem Absatz) kannst du R-Code ausführen und so die Beispiele nachvollziehen, Übungen lösen und ausprobieren, was das Zeug hält.
+Du kannst Dir die Konsole wie eine Zelle in einem Excel-Sheet vorstellen (nur ohne dass man ein "=" voranstellt und eben viel cooler ;-).  
+Ausgeführt wird der Code per Klick auf den "**Run Code**"-Button oben rechts an der Konsole.  
+***Programmieren lernt man am besten durch Machen... also ran an die Tasten!***
 
-Ein Programm oder Skript ist also eine Abfolge von Anweisungen, die der *Interpreter* so übersetzt, dass der Computer sie *ausführen* kann. So wie Dein Hirn eine Dir bekannte Fremdsprache so übersetzt, dass Du mit dem Gesagten etwas anfangen kannst. Was genau der Interpreter anstellt, ist nicht wichtig. Entscheidend ist, dass wir eine Sprache lernen wollen, mit der wir dem Computer beibringen können, Dinge für uns zu tun...
+#### Konsole:
 
-Jede Programmiersprache ermöglicht zudem das einfügen von Kommentaren, die vom *Interpreter* ignoriert werden. In **R** werden Kommentare von einem `#`-Zeichen eingeleitet.
+*Benutze die Konsole als Taschenrechner und berechne das Produkt aus 2, 3 und 7:*
+
+```{r playground, exercise=TRUE}
+
+```
+
+```{r playground-solution}
+2*3*7
+```
+
+Und? Kam das richtige Ergebnis raus? Dann Glückwunsch, Du hast eine Programmiersprache genutzt um ein Problem zu lösen, man könnte sagen, Du hast programmiert!
+
+Das war etwas billig, zugegeben...
+Ein echtes Programm oder Skript ist eine Abfolge von mehreren Anweisungen, die der *Interpreter* so übersetzt, dass der Computer sie *ausführen* kann. So wie Dein Hirn eine Dir bekannte Fremdsprache so übersetzt, dass Du mit dem Gesagten etwas anfangen kannst. Was genau der Interpreter anstellt, ist nicht wichtig. Entscheidend ist, dass wir eine Sprache lernen wollen, mit der wir dem Computer beibringen können, Dinge für uns zu tun, die uns zu langweilig oder zu schwierig sind...  
+Du hast schonmal ein Kochrezept geschrieben? Wunderbar, dann hast Du ja schon Erfahrung.
+Eine Reihe von Anweisungen, so wie in einem Kochrezept, wird auch [Algorithmus](https://de.wikipedia.org/wiki/Algorithmus) genannt. Klingt gleich viel wichtiger, was?
+
+Nun sind Computer ziemlich stumpf und machen nur genau das, was man ihnen sagt. Umso wichtiger ist es, dass man sehr präzise ist beim Formulieren der Algorithmen. Eine vergessene Klammer, ein falsch gesetztes Komma, ein missplatziertes Minuszeichen ... und der *Interpreter* weiß nicht weiter und konfrontiert Dich mit Warnungen oder schlimmstenfalls Fehlern. Nach einiger Zeit gewöhnt man sich ab, dem Computer die Schuld für diese Fehler zu geben --- es ist eigentlich fast immer ein Lapsus im eigenen Code.
+
+Jede Programmiersprache ermöglicht das einfügen von Kommentaren in den Code, die vom *Interpreter* ignoriert werden. In **R** werden Kommentare von einem `#`-Zeichen eingeleitet.
 Kommentare sind wichtig, um den Programmcode zu erläutern, andere Menschen oder das zukünftige Selbst können es sonst schwer haben, das Programm zu verstehen.  
 Kommentare sollen den Programmcode erläutern, nicht noch einmal beschreiben, was der Code tut. Gut geschriebener Code erklärt sich bestenfalls selbst. Die Kommentare geben zusätzlich Aufschluss über die Absichten und Gedanken des Autors sowie z.B. Fallstricke, in die er schon gestolpert ist. 
 Wie wichtig Kommentare sind, realisiert man z.B. während man seinen eigenen Code von letzter Woche nicht mehr versteht.
 
 > `Die folgenden Beispiele zeigen Programmcode im grau hinterlegten Kasten.`  
-> Die zugehörige Ausgabe (falls es eine gibt) findet sich jeweils im Kasten darunter.
-
-Programmieren lernt man am besten durch Machen... also ran an die Tasten, die Beispiele nachvollziehen und spielen!  
-In Konsolenfenstern wie diesen kannst du es einfach ausprobieren, 
-stell' sie Dir wie eine Zelle in einem Excel-Sheet vor (nur ohne dass man ein "=" voranstellt und eben viel cooler ;-). Ausgeführt wird der Code per Klick auf den "Run Code"-Button oben rechts an der Konsole oder per Tastenkombination **Alt** + **Enter**:
-
-```{r playground, exercise=TRUE, exercise.lines = 2}
-# Benutze die Konsole als Taschenrechner und berechne 2*3*7!:
-
-```
-
-```{r playground-solution}
-# Benutze die Konsole als Taschenrechner und berechne 2*3*7!:
-2*3*7
-```
-
-
-Ein sehr einfaches **R**-Skript:
+> Die zugehörige Ausgabe (falls es eine gibt) findet sich jeweils im Kasten darunter. 
 
 ```{r}
+# Ein sehr einfaches R-Skript:
 "Hello world!" # Ausgabe einer Zeichenkette
 1 + 1 # Addieren zweier Zahlen und Ausgabe des Ergebnisses
 ```
 
-Das obige Skript besteht aus zwei Zeilen mit jeweils einem Befehl und erklärendem Kommentar dahinter:
+Das obige Skript besteht aus drei Zeilen mit Kommentaren und Befehlen.
 
- * Die erste Zeile bewirkt das Ausgeben des Texts "Hello world!".
- * Die zweite Zeile zählt eins und eins zusammen und gibt das Ergebnis zurück.
+ * Die erste Zeile enthält lediglich einen Kommentar. Sie wird vom Interpreter einfach ignoriert und bewirkt gar nichts.
+ * Die zweite Zeile bewirkt das Ausgeben des Texts "Hello world!".   (Es ist Tradition, dass man durch das Erzeugen dieser Ausgabe in die Welt des Programmierens eintaucht. Also gib' Dir 'nen Ruck und nutze die [Konsole oben](#konsole), in der noch die kleine Rechenaufgabe steht...)
+ * Die dritte Zeile zählt eins und eins zusammen und gibt das Ergebnis zurück.
 
 Beide Befehle haben jeweils einen *Rückgabewert*, der im Konsolenfenster ausgegeben wird. Einmal den Text **"Hello world!"**
 und
@@ -72,9 +96,11 @@ Und was soll die **[1]** davor bedeuten?
 Ausgaben in **R** werden nummeriert und die Nummer des ersten Elements jeder Zeile steht in eckigen Klammern voran, wobei mit jedem neuen Befehl die Zählung wieder bei 1 beginnt. Folgendes Beipiel zur Verdeutlichung:
 
 ```{r}
-1:42 # 1:42 ist eine Kurzform zur Erzeugung einer Reihe ganzer Zahlen von 1 bis 42
+1:99 # Kurzform zur Erzeugung einer Reihe ganzer Zahlen von 1 bis 99
 ## Tip: dies könnte später in einer Übung nützlich sein =)
 ```
+
+Die Rückgabe besteht also aus einer langen Zahlenfolge, beginnend mit 1, passt aber nicht auf eine Zeile, wird darum auf mehrere Zeilen aufgeteilt und zur besseren Orientierung steht am Anfang jeder Zeile in eckigen Klammern die Nummer des jeweils ersten Elements der Zeile.
 
 Mal sehen, ob schon was hängen geblieben ist:
 
@@ -97,24 +123,55 @@ question("Wofür sind Kommentare in Programmiersprachen gedacht?",
 
 ## Variablen
 
-Variablen sind **Platzhalter** für Daten. Sie könne beliebige Arten und Mengen von Daten enthalten und sollten daher immer sinnvoll benannt sein. In **R** werden Daten mit dem Zuweisungsoperator `<-` in Variablen geschrieben:
+Variablen sind **benannte Speicherplätze** für Daten. Sie könne beliebige Arten und Mengen von Daten enthalten und sollten daher immer sinnvolle Namen haben. In **R** werden Daten mit dem Zuweisungsoperator `<-` in Variablen geschrieben (man kann auch ein `=` benutzen, es gibt aber gute Gründe, das nicht zu tun.):
 
 ```{r}
 eine_zahl <- 23
 ```
 
+Das Ablegen in der Variable ersetzt gewissermaßen die Ausgabe auf der Konsole (oder darunter, wie im Fall unserer Übungs-Konsole).
 Das Auslesen einer Variable geschieht durch simples 'ausführen' des Variablennamens:
 
 ```{r}
 eine_zahl
 ```
 
+#### Probier's aus! {#konsole2}
 
-Als Variablenname ist alles erlaubt, was mit einem Buchstaben beginnt. Es gibt gewisse Ausnahmen: so dürfen Variablen z.B. auch mit einem '.' oder '_' beginnen. Ziffern, Rechen- und Vergleichsoperatoren ('+', '<', '=', ...) sind aber tabu!.
-Man sollte außerdem keine Namen verwenden, die bereits vergeben sind (Funktionennamen, '*TRUE*' und '*FALSE*', ...), das kann sonst unerwartetes Verhalten des Programms hervorrufen.
+*Schreibe eine beliebige Zahl in eine Variable namens `zahl` und gib den Inhalt der Variable wieder aus:*
 
-Aussagekräftige Variablennamen helfen sehr beim Verständnis des Programmcodes! Zusammen mit ordentlichen Kommentaren machen verständliche Variablennamen DEN Unterschied zwischen Code, der NUR vom Computer verstanden wird (wenn überhaupt) und Quelltext, den auch ein Programmierer nachvollziehen kann. 
+```{r VariablenZahl, exercise = TRUE}
 
+```
+
+```{r VariablenZahl-hint-1}
+zahl <- 42
+```
+
+```{r VariablenZahl-solution}
+zahl <- 42
+zahl
+```
+
+*Wenn du alles richtig gemacht hast, sollte die gewählte Zahl mit vorangestelltem `[1]` unter der Konsole erscheinen. Falls nicht, hast du womöglich vergessen, in einem zweiten Schritt den Inhalt der Variable `zahl` auszugeben.*
+
+Als Variablenname ist alles erlaubt, was mit einem Buchstaben beginnt.
+Es gibt aber gewisse Ausnahmen: so dürfen Variablen z.B. auch mit einem '.' oder '_' beginnen. Ziffern, Rechen- und Vergleichs- und sonstige Operatoren (`+`, `<`, `=`, `?`, `!`, ... ) sind aber tabu!
+Man sollte außerdem keine Namen verwenden, die bereits von R selbst vergeben sind (das geht zwar, kann aber leicht zu unerwartetem Verhalten des Programms führen): 
+
+ - Funktionennamen (wir kommen gleich zu den Funktionen) wie `sum`, `c`, `length`, ... sollte man meiden.
+ - die Wahrheitswerte `TRUE` und `FALSE` sowie ihre abkürzungen `T` und `F` sind ebenfalls ungeeignet als Variablenname.
+ - vordefinierte Konstanten wie `pi`, `letters` oder `month.name` sollten auch nicht überschrieben werden.
+ 
+ Wenn Du Dir bei einem Namen nicht sicher bist, kannst du ihn einfach auf der Konsole ausprobieren. Wenn er noch frei ist, gibt dir der Interpreter einen Fehler zurück.
+ 
+Trau dich! Wähle ein Wort, das **R** bestimmt nicht reserviert hat und finde heraus, wie der Interpreter Dich wissen lässt, dass er mit einem Befehl nichts anfangen kann:
+ 
+```{r Reserviert, exercise = TRUE, exercise.completion = FALSE}
+
+```
+
+#### Noch ein Beispiel:
 
 ```{r}
 summe <- eine_zahl + 19
@@ -123,19 +180,38 @@ summe
 
 Im obigen Skript wird 
 
- 1) die Summe aus *eine.zahl* + 19 gebildet und in die Variable *summe* geschrieben,
- 2) das Ergebnis der Berechnung ausgegeben.
+ 1) die Summe aus `eine_zahl` und `19` gebildet und das Ergebnis in die Variable *summe* geschrieben,
+ 2) der Inhalt der Variable `summe` ausgegeben.
  
- Beachte: Das Ergebniss der ersten Zeile wird nicht ausgegeben sondern in die Variable *summe* geschrieben. Die zweite Zeile hingegen schreibt nicht in eine Variable sondern gibt ihr Ergebnis auf dem Bildschirm aus.
+ Beachte: Das Ergebniss der ersten Zeile wird nicht ausgegeben sondern in die Variable `summe` geschrieben. Die zweite Zeile hingegen schreibt nicht in eine Variable sondern gibt ihr Ergebnis auf dem Bildschirm aus. In aller Regel will man Ergebnisse zur späteren Weiterverwendung in einer Variable speichern und sie nicht nur auf dem Bildschirm ausgeben.  
+Wir erinnern uns: ein Algorithmus ist eine Sequenz von Befehlen zur Lösung eines Problems.
+Dafür werden normalerweise mehrere Zwischenschritte benötigt, wobei die Ergebnisse der Zwischenschritte später wieder abgerufen und weiter verwendet werden sollen.
 
-Eine Fingerübung:
+#### Ein kleiner Algorithmus:
 
-```{r VariablenZahl, exercise = TRUE}
-# Schreibe eine beliebige Zahl in die Variable 'zahl' ...
-...
-# ... und gib diese Zahl auf der Konsole aus:
-zahl # Ausgabe der gewählten Zahl auf der Konsole
+```{r}
+# Wir berechnen den Rauminhalt eines Zylinders
+
+# Definition der Eingabewerte:
+zylinderhoehe_cm    <- 5
+zylinderradius_cm   <- 1.6351768
+# pi ist bereits vordefiniert. Danke R!!
+
+# Berechnung der Kreisfläche mit der Formel A = π · r²
+zyl_grundflaeche_cm2    <- pi * zylinderradius_cm^2
+
+# Berechnung des Zylindervolumens V = A · h
+zyl_volumen_cm3 <- zyl_grundflaeche_cm2 * zylinderhoehe_cm
+
+# Ausgabe des Ergebnis
+zyl_volumen_cm3
 ```
+
+
+Aussagekräftige Variablennamen helfen sehr beim Verständnis des Programmcodes! Zusammen mit ordentlichen Kommentaren machen verständliche Variablennamen **DEN** Unterschied zwischen Code, der nur vom Computer verstanden wird (wenn überhaupt) und Quelltext, den auch ein Mensch nachvollziehen kann. Und das ist es, worauf es beim Programmieren letztlich ankommt:  
+Einen Algorithmus zu schreiben, der richtige Ergebnisse liefert und für den Leser nachvollziehbar ist.
+
+
 
 
 
@@ -163,13 +239,14 @@ sum(1, 2, 3)
 
 Das wenden wir doch gleich mal an (wenn Du nicht weiter kommst, drück den Hint-Button für Hinweise):
 
-```{r reihensumme, exercise=TRUE, exercise.lines = 6}
-# Gib die Zahlen von 1 bis 100 auf der Konsole aus:
+```{r reihensumme, exercise=TRUE}
+# Gib die Zahlen von 1 bis 100 auf der Konsole aus. (Gab's da nicht so nen Trick mit nem Doppelpunkt?!?):
 
-# Schreibe das Ergebnis in eine variable Namens 'eins_bis_hundert':
+# Schreibe das Ergebnis in eine Variable namens 'eins_bis_hundert':
 
-# Bilde die Summe all dieser Zahlen. Benutze dafür die Funktion sum():
+# Bilde die Summe all dieser Zahlen. Wende dafür die Funktion sum() auf die Variable 'eins_bis_hundert' an:
 
+# Du darfst meinetwegen kurz mal daran denken, wie das in Excel gehen würde =)
 ```
 
 ```{r reihensumme-hint-1}
@@ -212,13 +289,14 @@ Du kennst nun die Funktionen `sum()` und `round()`.
 Löse damit folgende Aufgabe:  
 Die Variable `flurstuecksflaechen_ha` enthält die Flächenmaße einer Reihe von Flurstücken in einem Windeignungsgebiet. Ermittle die Gesamtfläche der Flurstücke, runde das Ergebnis und schreibe es in die Variable `gesamtflaeche_ha`.
 
-```{r RundeReihe, exercise = TRUE, exercise.lines = 6}
+```{r RundeReihe, exercise = TRUE}
 # Schau dir den Inhalt der variable 'flurstuecksflaechen_ha' erst einmal an:
 
 # Berechne die Summe aller Werte in dieser Variable und gebe das Ergebnis auf der Konsole aus:
 
 # Erweitere die Code-Zeile so, dass die Summe gerundet wird. Gib das Ergebnis auf der Konsole aus:
 
+# Es sollte 66 heraus kommen, ja, 66 nicht 42!
 ```
 
 ```{r RundeReihe-solution}
@@ -231,7 +309,7 @@ round(sum(flurstuecksflaechen_ha))
 ```
 
 Die Teile innerhalb der Klammer einer Funktion heißen *Argumente*.
-Funktionen haben oft mehrere Argumente, diese sind dann durch Kommata getrennt, können aber auch mit nur einem oder gar keinem Argument aufgerufen werden. Welche Argumente eine Funktion kennt, entnimmt man dem Handbuch, das es zu jeder Funktion gibt. Alternativ lässt man sich von der Auto-Vervollständigung seiner Entwicklungsumgebung (z.B. **RStudio**) helfen:
+Funktionen haben oft mehrere Argumente, diese sind dann durch Kommata getrennt. Funktionen können aber auch mit nur einem oder gar keinem Argument aufgerufen werden. Welche Argumente eine Funktion kennt, entnimmt man dem Handbuch, das es zu jeder Funktion gibt. Alternativ lässt man sich von der Auto-Vervollständigung seiner Entwicklungsumgebung (z.B. **RStudio**) helfen:
 
 ```{r AutoCompletion, exercise = TRUE}
 # Tippe "round(" und anschließend die Tab-Taste (↹)
@@ -241,6 +319,7 @@ Funktionen haben oft mehrere Argumente, diese sind dann durch Kommata getrennt, 
 ?round
 ```
 
+Ja, ich weiß... Das sieht gruselig aus. Aber auch hier hilft Dir eine gute Entwicklungsumgebung. In RStudio z.B. gibt es die Handbücher für alle Funktionen in deutlich hübscher! Sie sind dennoch etwas gewöhnungsbedürftig...
 
 Im folgenden Beispiel werden der Funktion `round()` *zwei* Argument mitgegeben, die zu rundende Zahl (*x*) und die Anzahl Dezimalstellen (*digits*) auf die gerundet werden soll. Die Argumente können, müssen aber nicht, mit ihrem Namen aufgerufen werden. 
 Wählt man die faule Variante (ohne Namen), muss man unbedingt auf die richtige **Reihenfolge der Argumente** achten.
@@ -450,7 +529,7 @@ Eine dieser Erweiterungen ist das **simple features** Package (*sf*). Es erlaubt
 
 Ein weiteres Package **mapview** ermöglicht die dynamische Visualisierug von Geodaten.
 
-### Ein WebGIS mit 4 Zeilen Code:
+### Eine dynamische Karte mit 4 Zeilen Code:
 
 Laden und visualisieren eines Polygons aus einem shp-File.
 
@@ -475,41 +554,43 @@ Der simple Aufruf `mapview(ein_polygon)` generiert dieses kleine WebGIS für uns
   
 Ist das nicht toll?!?
 
-Jetzt bist Du dran! Lade das Shapefile *NI_heart.shp* in eine Variable deiner Wahl und plotte es mit der `mapview()`-Funktion.
+Zugegeben, diese 4 Zeilen generieren nur die Karte, nicht die Webseite drumherum. In [diesem kurzen Tutorial](https://markolipka.github.io/WhyAndHowRMarkdown/) lernst du, wie verblüffend einfach das mit **RMarkdown** geht.
 
-```{r KarteLadenPlotten, exercise=TRUE}
-setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
-library(sf) # sf Package laden
-library(mapview) # mapview Package laden
+<!-- Jetzt bist Du dran! Lade das Shapefile *NI_heart.shp* in eine Variable deiner Wahl und plotte es mit der `mapview()`-Funktion. -->
 
-# Ergänze den Code an den markierten stellen:
-# Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-... st_read("NI_heart.shp")
-# Visualisieren mit mapview():
-...
-```
+<!-- ```{r KarteLadenPlotten, exercise=TRUE} -->
+<!-- setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen. -->
+<!-- library(sf) # sf Package laden -->
+<!-- library(mapview) # mapview Package laden -->
 
-```{r KarteLadenPlotten-hint-1}
-# Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-variablennameDeinerWahl <- st_read("NI_heart.shp")
-```
+<!-- # Ergänze den Code an den markierten stellen: -->
+<!-- # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl: -->
+<!-- ... st_read(dsn = "NI_heart.shp") -->
+<!-- # Visualisieren mit mapview(): -->
+<!-- ... -->
+<!-- ``` -->
 
-```{r KarteLadenPlotten-hint-2}
-# Visualisieren mit mapview():
-mapview(variablennameDeinerWahl)
-```
+<!-- ```{r KarteLadenPlotten-hint-1} -->
+<!-- # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl: -->
+<!-- variablennameDeinerWahl <- st_read(dsn = "NI_heart.shp") -->
+<!-- ``` -->
 
-```{r KarteLadenPlotten-solution}
-setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
-library(sf) # sf Package laden
-library(mapview) # mapview Package laden
+<!-- ```{r KarteLadenPlotten-hint-2} -->
+<!-- # Visualisieren mit mapview(): -->
+<!-- mapview(variablennameDeinerWahl) -->
+<!-- ``` -->
 
-# Ergänze den Code an den markierten stellen:
-# Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl:
-variablennameDeinerWahl <- st_read("NI_heart.shp")
-# Visualisieren mit mapview():
-mapview(variablennameDeinerWahl)
-```
+<!-- ```{r KarteLadenPlotten-solution} -->
+<!-- setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen. -->
+<!-- library(sf) # sf Package laden -->
+<!-- library(mapview) # mapview Package laden -->
+
+<!-- # Ergänze den Code an den markierten stellen: -->
+<!-- # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl: -->
+<!-- variablennameDeinerWahl <- st_read(dsn = "NI_heart.shp") -->
+<!-- # Visualisieren mit mapview(): -->
+<!-- mapview(variablennameDeinerWahl) -->
+<!-- ``` -->
 
 ### Geodatenverarbeitung:
 
@@ -554,10 +635,11 @@ Jetzt bist Du wieder dran; editiere den Code so, dass anstelle der Geometrie **e
 setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
 
 # Ergänze an den markierten Stellen:
-...("NI_heart.shp") %>% # Polygon einlesen
+herzpolygonpuffer <- ...("NI_heart.shp") %>% # Polygon einlesen
   st_transform(crs = 32632) %>% # Transformation
-  st_buffer(dist = ...) %>% # Puffer
-  mapview() # Visualisierung
+  st_buffer(dist = ...) # Puffer
+
+mapview(herzpolygonpuffer) # Visualisierung
 ```
 
 ```{r HerzPuffer-solution}
