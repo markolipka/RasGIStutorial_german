@@ -556,41 +556,7 @@ Ist das nicht toll?!?
 
 Zugegeben, diese 4 Zeilen generieren nur die Karte, nicht die Webseite drumherum. In [diesem kurzen Tutorial](https://markolipka.github.io/WhyAndHowRMarkdown/) lernst du, wie verblüffend einfach das mit **RMarkdown** geht.
 
-<!-- Jetzt bist Du dran! Lade das Shapefile *NI_heart.shp* in eine Variable deiner Wahl und plotte es mit der `mapview()`-Funktion. -->
 
-<!-- ```{r KarteLadenPlotten, exercise=TRUE} -->
-<!-- setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen. -->
-<!-- library(sf) # sf Package laden -->
-<!-- library(mapview) # mapview Package laden -->
-
-<!-- # Ergänze den Code an den markierten stellen: -->
-<!-- # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl: -->
-<!-- ... st_read(dsn = "NI_heart.shp") -->
-<!-- # Visualisieren mit mapview(): -->
-<!-- ... -->
-<!-- ``` -->
-
-<!-- ```{r KarteLadenPlotten-hint-1} -->
-<!-- # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl: -->
-<!-- variablennameDeinerWahl <- st_read(dsn = "NI_heart.shp") -->
-<!-- ``` -->
-
-<!-- ```{r KarteLadenPlotten-hint-2} -->
-<!-- # Visualisieren mit mapview(): -->
-<!-- mapview(variablennameDeinerWahl) -->
-<!-- ``` -->
-
-<!-- ```{r KarteLadenPlotten-solution} -->
-<!-- setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen. -->
-<!-- library(sf) # sf Package laden -->
-<!-- library(mapview) # mapview Package laden -->
-
-<!-- # Ergänze den Code an den markierten stellen: -->
-<!-- # Lade das Shapefile "NI_heart.shp" in eine Variable deiner Wahl: -->
-<!-- variablennameDeinerWahl <- st_read(dsn = "NI_heart.shp") -->
-<!-- # Visualisieren mit mapview(): -->
-<!-- mapview(variablennameDeinerWahl) -->
-<!-- ``` -->
 
 ### Geodatenverarbeitung:
 
@@ -628,27 +594,35 @@ ein_polygon %>%
   mapview() # Visualisierung
 ```
 
+------------
 
 Jetzt bist Du dran; wir wollen nun anstelle der Geometrie **ein_polygon** ein anderes Polygon puffern.
-Lade dazu bitte zunächst das Shape-file **NI_heart.shp** und wähle eine geeignete Pufferdistanz:
+Ergänze das folgende Skript dazu bitte an den markierten Stellen so, dass 
+
+- das Shape-file **NI_heart.shp** geladen,
+- mit einer geeigneten Pufferdistanz gepuffert und
+- das Ergebnis mit der Funktion `mapview()` dargestellt wird.
+
+Orientiere Dich an den Beispielen oben, wenn du nicht weiter kommst:
+
+```{r}
+setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
+```
+
 
 ```{r HerzPuffer, exercise = TRUE}
-setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
-
 # Ergänze an den markierten Stellen:
 ...("NI_heart.shp") %>% # Polygon einlesen
   st_transform(crs = 32632) %>% # Transformation
-  st_buffer(dist = ...) %>% # Puffer
+  st_buffer(dist = ...) %>% # Puffer in m
   mapview() # Visualisierung
 ```
 
 ```{r HerzPuffer-solution}
-setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
-
 # Ergänze an den markierten Stellen:
 st_read("NI_heart.shp") %>% # Polygon einlesen
   st_transform(crs = 32632) %>% # Transformation
-  st_buffer(dist = 1000) %>% # Puffer
+  st_buffer(dist = 10) %>% # Puffer in m
   mapview() # Visualisierung
 ```
 
