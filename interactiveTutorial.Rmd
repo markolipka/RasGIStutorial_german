@@ -21,7 +21,7 @@ flurstuecksflaechen_ha <- c(Horst     = 0.23,
                             Jaqueline = 11.111111,
                             Kurti     = 12.345678)
 
-#wd <- "/srv/shiny-server/RasGIStutorial_german"
+wd <- "/srv/shiny-server/RasGIStutorial_german"
 #setwd(wd)
 
 gemischter_vector <- c(3, 4, "fünf")
@@ -629,17 +629,17 @@ ein_polygon %>%
 ```
 
 
-Jetzt bist Du wieder dran; editiere den Code so, dass anstelle der Geometrie **ein_polygon** das Herz-Polygon gepuffert wird. Lade dieses dazu bitte zunächst aus den Shape-files **NI_heart.shp** und wähle eine geeignete Pufferdistanz.
+Jetzt bist Du dran; wir wollen nun anstelle der Geometrie **ein_polygon** ein anderes Polygon puffern.
+Lade dazu bitte zunächst das Shape-file **NI_heart.shp** und wähle eine geeignete Pufferdistanz:
 
 ```{r HerzPuffer, exercise = TRUE}
 setwd(wd) # Arbeitsverzeichnis festlegen, in dem die Dateien liegen.
 
 # Ergänze an den markierten Stellen:
-herzpolygonpuffer <- ...("NI_heart.shp") %>% # Polygon einlesen
+...("NI_heart.shp") %>% # Polygon einlesen
   st_transform(crs = 32632) %>% # Transformation
-  st_buffer(dist = ...) # Puffer
-
-mapview(herzpolygonpuffer) # Visualisierung
+  st_buffer(dist = ...) %>% # Puffer
+  mapview() # Visualisierung
 ```
 
 ```{r HerzPuffer-solution}
