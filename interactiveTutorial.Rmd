@@ -405,7 +405,7 @@ text_der_aussieht_wie_eine_zahl <- "42"
 Daten können in ganz verschiedenen (und beinahe beliebig komplexen) Kombinationen und Strukturen angeordnet sein.
 In der einfachsten Form, steckt nur ein einzelner Wert in einer Variable.
 
-Das kann eine Zal sein ...:
+Das kann eine Zahl sein ...:
 
 ```{r}
 nur_ein_Wert <- 42 # Erstellen einer Variable mit nur einem Wert
